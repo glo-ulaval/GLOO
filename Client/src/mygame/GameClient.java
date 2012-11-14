@@ -41,9 +41,9 @@ public class GameClient extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         client = null;
-        initializeCamera();
         initializeClient();
         instantiateObjects();
+        initializeCamera();
         try {
             client = Network.connectToServer("localhost", AngryPidgeServerMain.PORT);
             client.start();
@@ -53,7 +53,7 @@ public class GameClient extends SimpleApplication {
         } catch (IOException ex) {
             Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
     
     @Override
@@ -67,7 +67,8 @@ public class GameClient extends SimpleApplication {
     }
     
     private void initializeCamera() {
-        cam.setLocation(new Vector3f(10f, 8f, 15f));
+        Vector3f positon = map.getShootingSpot(0).getPosition();
+        cam.setLocation(new Vector3f(positon.x, 8f, positon.z));
         cam.lookAt(new Vector3f(2, 2, 0), Vector3f.UNIT_Y);
     }
     
@@ -98,6 +99,7 @@ public class GameClient extends SimpleApplication {
         }
     };
     
+    
    public class ClientListener implements MessageListener<Client> {
        
        public void messageReceived(Client source, Message message) {
@@ -116,5 +118,9 @@ public class GameClient extends SimpleApplication {
            }
        }
     }
+   
+   public void setCameraLocation(Vector3f position){
+       this.cam.setLocation(position);
+   }
    
 }

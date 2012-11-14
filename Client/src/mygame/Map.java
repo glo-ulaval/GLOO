@@ -45,14 +45,14 @@ public class Map extends GeometryObject {
         instantiateObject();
         pullHut = new Hut(assetManager, rootNode, appState, new Vector3f(-80f, 5f,30f));
         markHut = new Hut(assetManager, rootNode, appState, new Vector3f(80f, 5f, 30f));
-        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-40f, 2f, -70f)));
-        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-30f, 2f, -90f)));
-        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-20f, 2f, -110f)));
-        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-8f, 2f, -130f)));
-        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(8f, 2f, -130f)));
-        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(20f, 2f, -110f)));
-        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(30f, 2f, -90f)));
-        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(40f, 2f, -70f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-50f, 2f, -50f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-30f, 2f, -75f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-15f, 2f, -90f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(0f, 2f, -100f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(15f, 2f, -90f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(30f, 2f, -75f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(50f, 2f, -50f))); 
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(0f, 2f, 0f)));
     }
 
     @Override
@@ -71,5 +71,9 @@ public class Map extends GeometryObject {
         floorGeo.addControl(floorPhy);
         appState.getPhysicsSpace().add(floorPhy);
         rootNode.attachChild(SkyFactory.createSky(assetManager, "Textures/Sky/Bright/BrightSky.dds", false));
+    }
+    
+    public ShootingSpot getShootingSpot(int index){
+        return this.shootingSpots.get(index);
     }
 }
