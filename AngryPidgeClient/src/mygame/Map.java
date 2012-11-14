@@ -48,7 +48,6 @@ public class Map extends GeometryObject {
         floorGeo.setMaterial(floorMat);
         floorGeo.setLocalTranslation(0, -0.1f, 0);
         this.rootNode.attachChild(floorGeo);
-        /* Make the floor physical with mass 0.0f! */
         floorPhy = new RigidBodyControl(0.0f);
         floorGeo.addControl(floorPhy);
         appState.getPhysicsSpace().add(floorPhy);
