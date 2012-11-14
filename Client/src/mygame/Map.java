@@ -30,7 +30,7 @@ public class Map extends GeometryObject {
 
     static {
         floor = new Box(Vector3f.ZERO, 240f, 0.1f, 120f);
-        floor.scaleTextureCoordinates(new Vector2f(36, 72));
+        floor.scaleTextureCoordinates(new Vector2f(9, 18));
     }
 
     public Map(AssetManager assetManager, Node rootNode, BulletAppState state) {
