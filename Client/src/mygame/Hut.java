@@ -17,10 +17,10 @@ public class Hut extends GeometryObject {
     private Material hutMat;
     private RigidBodyControl hutPhy;
     private static final Box hut;
-    
-    private static final float x = 5f;
-    private static final float y = 5f;
-    private static final float z = 5f;
+    private static final float x = 10f;
+    private static final float y = 10f;
+    private static final float z = 10f;
+    private Vector3f position;
 
     static {
         hut = new Box(Vector3f.ZERO, x, y, z);
@@ -29,12 +29,14 @@ public class Hut extends GeometryObject {
 
     public Hut(AssetManager assetManager, Node rootNode, BulletAppState state) {
         super(assetManager, rootNode, state);
+        //this.position = position;
+        instantiateObject();
     }
-    
+
     @Override
     protected void instantiateObject() {
         hutMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        TextureKey texture = new TextureKey("Textures/grass-texture.jpg");
+        TextureKey texture = new TextureKey("Textures/hut-texture.jpg");
         texture.setGenerateMips(true);
         Texture tex3 = assetManager.loadTexture(texture);
         tex3.setWrap(Texture.WrapMode.Repeat);
