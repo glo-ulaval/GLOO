@@ -41,7 +41,7 @@ public class Client extends SimpleApplication {
         initializeCamera();
         initializeClient();
         instantiateObjects();
-        player = new Player(bulletAppState);
+        player = new Player(bulletAppState, assetManager, rootNode);
     }
 
     @Override
