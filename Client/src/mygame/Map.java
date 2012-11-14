@@ -56,7 +56,16 @@ public class Map extends GeometryObject {
     }
     
     public void shootTarget() {
-        pullHut.shootTarget();
+        double random = Math.random() * ( 2 - 0 );
+        if (random == 0) {
+            pullHut.shootTarget(false);
+        } else if (random == 1) {
+            markHut.shootTarget(true);
+        } else {
+            pullHut.shootTarget(false);
+            markHut.shootTarget(true);
+        }
+        
     }
 
     @Override
