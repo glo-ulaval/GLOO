@@ -9,11 +9,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.JmeContext;
 
-/**
- * test
- *
- * @author normenhansen
- */
 public class Client extends SimpleApplication {
 
     private static final String SHOOT_BUTTON = "shoot";
