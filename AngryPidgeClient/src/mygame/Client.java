@@ -17,10 +17,12 @@ import java.util.logging.Logger;
 
 /**
  * test
+ *
  * @author normenhansen
  */
 public class Client extends SimpleApplication {
-    
+
+    private static final String SHOOT_BUTTON = "shoot";
     com.jme3.network.Client client;
     private BulletAppState bulletAppState;
 
@@ -30,8 +32,8 @@ public class Client extends SimpleApplication {
     }
 
     @Override
-    public void simpleInitApp(){
-         client = null;
+    public void simpleInitApp() {
+        client = null;
         try {
             client = Network.connectToServer("localhost", 4444);
         } catch (IOException ex) {
@@ -39,8 +41,9 @@ public class Client extends SimpleApplication {
         }
         client.start();
         initializeClient();
+        initializeCamera();
     }
-    
+
     @Override
     public void destroy() {
         client.close();
@@ -56,17 +59,22 @@ public class Client extends SimpleApplication {
     public void simpleRender(RenderManager rm) {
         //TODO: add render code
     }
-    
+
+    private void initializeCamera() {
+        cam.setLocation(new Vector3f(0, 4f, 6f));
+        cam.lookAt(new Vector3f(2, 2, 0), Vector3f.UNIT_Y);
+    }
+
     private void initializeClient() {
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
-        inputManager.addMapping("shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        inputManager.addListener(actionListener, "shoot");
+        inputManager.addMapping(SHOOT_BUTTON, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        inputManager.addListener(actionListener, SHOOT_BUTTON);
     }
-    
+
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
-            if(name.equals("shoot") && !isPressed) {
+            if (name.equals(SHOOT_BUTTON) && !isPressed) {
                 // instantiate the ball here
             }
         }
