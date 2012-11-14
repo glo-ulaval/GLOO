@@ -52,7 +52,7 @@ public class Client extends SimpleApplication {
     }
     
     private void initializeCamera() {
-        cam.setLocation(new Vector3f(10f, 4f, 15f));
+        cam.setLocation(new Vector3f(10f, 8f, 15f));
         cam.lookAt(new Vector3f(2, 2, 0), Vector3f.UNIT_Y);
     }
     

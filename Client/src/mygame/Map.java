@@ -16,6 +16,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
+import com.jme3.util.SkyFactory;
 
 /**
  *
@@ -28,8 +29,8 @@ public class Map extends GeometryObject {
     private static final Box floor;
 
     static {
-        floor = new Box(Vector3f.ZERO, 60f, 0.1f, 30f);
-        floor.scaleTextureCoordinates(new Vector2f(6, 12));
+        floor = new Box(Vector3f.ZERO, 240f, 0.1f, 120f);
+        floor.scaleTextureCoordinates(new Vector2f(36, 72));
     }
 
     public Map(AssetManager assetManager, Node rootNode, BulletAppState state) {
@@ -51,5 +52,7 @@ public class Map extends GeometryObject {
         floorPhy = new RigidBodyControl(0.0f);
         floorGeo.addControl(floorPhy);
         appState.getPhysicsSpace().add(floorPhy);
+        rootNode.attachChild(SkyFactory.createSky(
+            assetManager, "Textures/Sky/Bright/BrightSky.dds", false));
     }
 }
