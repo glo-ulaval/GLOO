@@ -19,6 +19,7 @@ import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -56,7 +57,7 @@ public class Map extends GeometryObject {
     }
     
     public void shootTarget() {
-        double random = Math.random() * ( 2 - 0 );
+        int random = new Random().nextInt(3);
         if (random == 0) {
             pullHut.shootTarget(false);
         } else if (random == 1) {
