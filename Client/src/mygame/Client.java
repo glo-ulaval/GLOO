@@ -20,7 +20,8 @@ public class Client extends SimpleApplication {
     com.jme3.network.Client client;
     private BulletAppState bulletAppState;
     private Map map;
-    private Hut hut;
+    private Hut hut1;
+    private Hut hut2;
 
     public static void main(String[] args) {
         Client app = new Client();
@@ -66,7 +67,8 @@ public class Client extends SimpleApplication {
 
     private void instantiateObjects() {
         map = new Map(assetManager, rootNode, bulletAppState);
-        hut = new Hut(assetManager, rootNode, bulletAppState, new Vector3f(30f, 5f, 0));
+        hut1 = new Hut(assetManager, rootNode, bulletAppState, new Vector3f(50f, 5f, 0));
+        hut2 = new Hut(assetManager, rootNode, bulletAppState, new Vector3f(0, 5f, 50f));
     }
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
