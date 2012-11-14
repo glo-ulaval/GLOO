@@ -28,8 +28,8 @@ public class Map extends GeometryObject {
     private static final Box floor;
 
     static {
-        floor = new Box(Vector3f.ZERO, 30f, 0.1f, 15f);
-        floor.scaleTextureCoordinates(new Vector2f(3, 6));
+        floor = new Box(Vector3f.ZERO, 60f, 0.1f, 30f);
+        floor.scaleTextureCoordinates(new Vector2f(6, 12));
     }
 
     public Map(AssetManager assetManager, Node rootNode, BulletAppState state) {
@@ -39,7 +39,7 @@ public class Map extends GeometryObject {
     @Override
     protected void instantiateObject() {
         floorMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        TextureKey texture = new TextureKey("Textures/Terrain/Pond/Pond.jpg");
+        TextureKey texture = new TextureKey("Textures/grass-texture.jpg");
         texture.setGenerateMips(true);
         Texture tex3 = assetManager.loadTexture(texture);
         tex3.setWrap(WrapMode.Repeat);

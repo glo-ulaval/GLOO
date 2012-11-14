@@ -7,7 +7,6 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
-import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 
 /**
@@ -37,9 +36,9 @@ public class Client extends SimpleApplication {
          Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
          }
          client.start();*/
-        map = new Map(assetManager, rootNode, bulletAppState);
         initializeCamera();
         initializeClient();
+        instantiateObjects();
     }
     
     @Override
@@ -53,7 +52,7 @@ public class Client extends SimpleApplication {
     }
     
     private void initializeCamera() {
-        cam.setLocation(new Vector3f(0, 4f, 6f));
+        cam.setLocation(new Vector3f(10f, 4f, 15f));
         cam.lookAt(new Vector3f(2, 2, 0), Vector3f.UNIT_Y);
     }
     
@@ -62,6 +61,10 @@ public class Client extends SimpleApplication {
         stateManager.attach(bulletAppState);
         inputManager.addMapping(SHOOT_BUTTON, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(actionListener, SHOOT_BUTTON);
+    }
+    
+    private void instantiateObjects() {
+        map = new Map(assetManager, rootNode, bulletAppState);
     }
     
     private ActionListener actionListener = new ActionListener() {
