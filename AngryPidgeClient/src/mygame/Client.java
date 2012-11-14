@@ -1,6 +1,10 @@
 package mygame;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -18,6 +22,7 @@ import java.util.logging.Logger;
 public class Client extends SimpleApplication {
     
     com.jme3.network.Client client;
+    private BulletAppState bulletAppState;
 
     public static void main(String[] args) {
         Client app = new Client();
@@ -33,6 +38,7 @@ public class Client extends SimpleApplication {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         client.start();
+        initializeClient();
     }
     
     @Override
@@ -50,4 +56,19 @@ public class Client extends SimpleApplication {
     public void simpleRender(RenderManager rm) {
         //TODO: add render code
     }
+    
+    private void initializeClient() {
+        bulletAppState = new BulletAppState();
+        stateManager.attach(bulletAppState);
+        inputManager.addMapping("shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        inputManager.addListener(actionListener, "shoot");
+    }
+    
+    private ActionListener actionListener = new ActionListener() {
+        public void onAction(String name, boolean isPressed, float tpf) {
+            if(name.equals("shoot") && !isPressed) {
+                // instantiate the ball here
+            }
+        }
+    };
 }
