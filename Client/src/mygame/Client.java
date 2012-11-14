@@ -15,18 +15,18 @@ import com.jme3.system.JmeContext;
  * @author normenhansen
  */
 public class Client extends SimpleApplication {
-    
+
     private static final String SHOOT_BUTTON = "shoot";
     com.jme3.network.Client client;
     private BulletAppState bulletAppState;
     private Map map;
     private Hut hut;
-    
+
     public static void main(String[] args) {
         Client app = new Client();
         app.start(JmeContext.Type.Display);
     }
-    
+
     @Override
     public void simpleInitApp() {
         /*
@@ -41,38 +41,37 @@ public class Client extends SimpleApplication {
         initializeClient();
         instantiateObjects();
     }
-    
+
     @Override
     public void simpleUpdate(float tpf) {
         //TODO: add update code
     }
-    
+
     @Override
     public void simpleRender(RenderManager rm) {
         //TODO: add render code
     }
-    
+
     private void initializeCamera() {
         cam.setLocation(new Vector3f(10f, 8f, 15f));
         cam.lookAt(new Vector3f(2, 2, 0), Vector3f.UNIT_Y);
     }
-    
+
     private void initializeClient() {
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
         inputManager.addMapping(SHOOT_BUTTON, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(actionListener, SHOOT_BUTTON);
     }
-    
+
     private void instantiateObjects() {
         map = new Map(assetManager, rootNode, bulletAppState);
         hut = new Hut(assetManager, rootNode, bulletAppState);
     }
-    
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
             if (name.equals(SHOOT_BUTTON) && !isPressed) {
-                // instantiate the ball here
+                new BulletGeometry(assetManager, rootNode, bulletAppState, FlyingObjectFactory.createBullet(25, cam.getDirection(), cam.getLocation()));
             }
         }
     };
