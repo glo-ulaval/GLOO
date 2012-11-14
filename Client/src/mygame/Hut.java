@@ -17,19 +17,19 @@ public class Hut extends GeometryObject {
     private Material hutMat;
     private RigidBodyControl hutPhy;
     private static final Box hut;
-    private static final float x = 10f;
-    private static final float y = 10f;
-    private static final float z = 10f;
+    private static final float x = 5f;
+    private static final float y = 6f;
+    private static final float z = 5f;
     private Vector3f position;
 
     static {
         hut = new Box(Vector3f.ZERO, x, y, z);
-        hut.scaleTextureCoordinates(new Vector2f(6, 12));
+        hut.scaleTextureCoordinates(new Vector2f(1, 1));
     }
 
-    public Hut(AssetManager assetManager, Node rootNode, BulletAppState state) {
+    public Hut(AssetManager assetManager, Node rootNode, BulletAppState state, Vector3f position) {
         super(assetManager, rootNode, state);
-        //this.position = position;
+        this.position = position;
         instantiateObject();
     }
 
@@ -43,7 +43,7 @@ public class Hut extends GeometryObject {
         hutMat.setTexture("ColorMap", tex3);
         Geometry hutGeo = new Geometry("Floor", hut);
         hutGeo.setMaterial(hutMat);
-        hutGeo.setLocalTranslation(0, -0.1f, 0);
+        hutGeo.setLocalTranslation(position.x, position.y, position.z);
         this.rootNode.attachChild(hutGeo);
         hutPhy = new RigidBodyControl(0.0f);
         hutGeo.addControl(hutPhy);

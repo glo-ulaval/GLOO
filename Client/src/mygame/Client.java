@@ -66,7 +66,7 @@ public class Client extends SimpleApplication {
 
     private void instantiateObjects() {
         map = new Map(assetManager, rootNode, bulletAppState);
-        hut = new Hut(assetManager, rootNode, bulletAppState);
+        hut = new Hut(assetManager, rootNode, bulletAppState, new Vector3f(30f, 5f, 0));
     }
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
