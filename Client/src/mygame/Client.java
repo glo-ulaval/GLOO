@@ -21,6 +21,7 @@ public class Client extends SimpleApplication {
     com.jme3.network.Client client;
     private BulletAppState bulletAppState;
     private Map map;
+    private Player player;
 
     public static void main(String[] args) {
         Client app = new Client();
@@ -40,6 +41,7 @@ public class Client extends SimpleApplication {
         initializeCamera();
         initializeClient();
         instantiateObjects();
+        player = new Player(bulletAppState);
     }
 
     @Override
