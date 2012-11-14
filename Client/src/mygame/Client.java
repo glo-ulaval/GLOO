@@ -71,7 +71,8 @@ public class Client extends SimpleApplication {
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
             if (name.equals(SHOOT_BUTTON) && !isPressed) {
-                new BulletGeometry(assetManager, rootNode, bulletAppState, FlyingObjectFactory.createBullet(25, cam.getDirection(), cam.getLocation()));
+                FlyingObject bullet = FlyingObjectFactory.createBullet(25, cam.getDirection(), cam.getLocation());
+                new BulletGeometry(assetManager, rootNode, bulletAppState, bullet);
             }
         }
     };

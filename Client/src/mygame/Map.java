@@ -35,6 +35,7 @@ public class Map extends GeometryObject {
 
     public Map(AssetManager assetManager, Node rootNode, BulletAppState state) {
         super(assetManager, rootNode, state);
+        instantiateObject();
     }
 
     @Override

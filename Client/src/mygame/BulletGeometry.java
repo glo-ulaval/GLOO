@@ -34,6 +34,7 @@ public class BulletGeometry extends GeometryObject {
     public BulletGeometry(AssetManager assetManager, Node rootNode, BulletAppState state, FlyingObject bullet) {
         super(assetManager, rootNode, state);
         this.bullet = bullet;
+        instantiateObject();
     }
 
     @Override
