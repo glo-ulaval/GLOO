@@ -27,7 +27,7 @@ public class BulletGeometry extends GeometryObject {
     private FlyingObject bullet;
 
     static {
-        sphere = new Sphere(32, 32, 0.4f, true, false);
+        sphere = new Sphere(32, 32, 0.5f, true, false);
         sphere.setTextureMode(TextureMode.Projected);
     }
 

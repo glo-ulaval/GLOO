@@ -27,6 +27,9 @@ public class Map extends GeometryObject {
     private Material floorMat;
     private RigidBodyControl floorPhy;
     private static final Box floor;
+    
+    private Hut hut1;
+    private Hut hut2;
 
     static {
         floor = new Box(Vector3f.ZERO, 240f, 0.1f, 120f);
@@ -36,6 +39,8 @@ public class Map extends GeometryObject {
     public Map(AssetManager assetManager, Node rootNode, BulletAppState state) {
         super(assetManager, rootNode, state);
         instantiateObject();
+        hut1 = new Hut(assetManager, rootNode, appState, new Vector3f(50f, 5f, 0));
+        hut2 = new Hut(assetManager, rootNode, appState, new Vector3f(0, 5f, 50f));
     }
 
     @Override

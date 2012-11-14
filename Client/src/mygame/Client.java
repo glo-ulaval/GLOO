@@ -2,6 +2,7 @@ package mygame;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
@@ -15,8 +16,6 @@ public class Client extends SimpleApplication {
     com.jme3.network.Client client;
     private BulletAppState bulletAppState;
     private Map map;
-    private Hut hut1;
-    private Hut hut2;
 
     public static void main(String[] args) {
         Client app = new Client();
@@ -62,13 +61,11 @@ public class Client extends SimpleApplication {
 
     private void instantiateObjects() {
         map = new Map(assetManager, rootNode, bulletAppState);
-        hut1 = new Hut(assetManager, rootNode, bulletAppState, new Vector3f(50f, 5f, 0));
-        hut2 = new Hut(assetManager, rootNode, bulletAppState, new Vector3f(0, 5f, 50f));
     }
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
             if (name.equals(SHOOT_BUTTON) && !isPressed) {
-                FlyingObject bullet = FlyingObjectFactory.createBullet(25, cam.getDirection(), cam.getLocation());
+                FlyingObject bullet = FlyingObjectFactory.createBullet(100, cam.getDirection(), cam.getLocation());
                 new BulletGeometry(assetManager, rootNode, bulletAppState, bullet);
             }
         }
