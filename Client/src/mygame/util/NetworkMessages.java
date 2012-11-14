@@ -14,10 +14,11 @@ import com.jme3.network.serializing.Serializer;
  */
 public class NetworkMessages {
     
-    public static void initializeSerializable(){
+    public static void initializeSerializables(){
         Serializer.registerClass(NetworkMessage.class);
         Serializer.registerClass(GameUpdateMessage.class);
         Serializer.registerClass(ShootingResult.class);
+        Serializer.registerClass(ConnectionMessage.class);
     }
     
     @Serializable
@@ -67,22 +68,23 @@ public class NetworkMessages {
     @Serializable
     public static class ShootingResult extends AbstractMessage{
         private boolean hasHitTarget;
-        private int teamNumber;
         
         public ShootingResult(){
         }
         
-        public ShootingResult(boolean hasHitTarget, int teamNumber){
+        public ShootingResult(boolean hasHitTarget){
             this.hasHitTarget = hasHitTarget;
-            this.teamNumber = teamNumber;
         }
 
         public boolean isHasHitTarget() {
             return hasHitTarget;
         }
-
-        public int getTeamNumber() {
-            return teamNumber;
+    }
+    
+    @Serializable
+    public static class ConnectionMessage extends AbstractMessage{
+        public ConnectionMessage(){
         }
     }
+    
 }
