@@ -19,7 +19,7 @@ public class TargetGeometry extends GeometryObject {
     private FlyingObject target;
 
     static {
-        sphere = new Sphere(32, 32, 2.0f, true, false);
+        sphere = new Sphere(32, 32, 2.5f, true, false);
         sphere.setTextureMode(TextureMode.Projected);
     }
 
@@ -39,10 +39,12 @@ public class TargetGeometry extends GeometryObject {
         Geometry geo = new Geometry("Target", sphere);
         geo.setMaterial(targetMat);
         rootNode.attachChild(geo);
-        geo.setLocalTranslation(target.getPosition());
         targetPhy = new RigidBodyControl(1f);
         geo.addControl(targetPhy);
         appState.getPhysicsSpace().add(targetPhy);
+        targetPhy.setPhysicsLocation(target.getPosition());
         targetPhy.setLinearVelocity(target.getVelocity());
+        targetPhy.setMass(0.1f); 
+        targetPhy.setKinematic(false);
     }
 }

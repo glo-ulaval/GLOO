@@ -32,6 +32,11 @@ public class Hut extends GeometryObject {
         this.position = position;
         instantiateObject();
     }
+    
+    public void shootTarget() {
+        FlyingObject target = FlyingObjectFactory.createTarget(new Vector3f(8f,8f,0), new Vector3f(position.x, position.y + 15.0f, position.z));
+        new TargetGeometry(assetManager, rootNode, appState, target);
+    }
 
     @Override
     protected void instantiateObject() {

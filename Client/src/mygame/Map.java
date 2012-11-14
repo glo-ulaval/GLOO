@@ -54,6 +54,10 @@ public class Map extends GeometryObject {
         shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(50f, 2f, -50f))); 
         shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(0f, 2f, 0f)));
     }
+    
+    public void shootTarget() {
+        pullHut.shootTarget();
+    }
 
     @Override
     protected void instantiateObject() {

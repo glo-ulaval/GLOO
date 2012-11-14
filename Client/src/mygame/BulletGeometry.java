@@ -43,6 +43,9 @@ public class BulletGeometry extends GeometryObject {
         ballPhy = new RigidBodyControl(1f);
         mesh.addControl(ballPhy);
         appState.getPhysicsSpace().add(ballPhy);
+        ballPhy.setPhysicsLocation(bullet.getPosition());
         ballPhy.setLinearVelocity(bullet.getVelocity());
+        ballPhy.setMass(0.5f); 
+        ballPhy.setKinematic(false);
     }
 }

@@ -30,6 +30,7 @@ public class GameClient extends SimpleApplication {
     private BulletAppState bulletAppState;
     private Map map;
     private BitmapText text;
+    private Player player;
        
     public static void main(String[] args) {
         GameClient app = new GameClient();
@@ -89,12 +90,13 @@ public class GameClient extends SimpleApplication {
         text.setText("Ronde en cours : 1 || Score équipe 1 = 0 | Score équipe 2 = 0");
         text.setLocalTranslation(300, text.getLineHeight(), 0);
         guiNode.attachChild(text);
+        player = new Player(bulletAppState, assetManager, rootNode);
     }
     
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
-            if (name.equals(SHOOT_BUTTON) && !isPressed) {
-                // instantiate the ball here
+            if (name.equals(SHOOT_BUTTON) && !isPressed && player.canShoot()) {
+                player.shoot(cam.getDirection(), cam.getLocation());
             }
         }
     };

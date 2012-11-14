@@ -23,10 +23,12 @@ import com.jme3.scene.Spatial;
  */
 public class Player extends RigidBodyControl implements PhysicsCollisionListener {
 
-    public static final String BALL_NAME = "Ball";
+    private static final String BALL_NAME = "Ball";
+    private static final String TARGET_NAME = "Target";
     private BulletAppState appState;
     private AssetManager assetManager;
     private Node rootNode;
+    private boolean canShoot = true;
 
     public Player(BulletAppState appState, AssetManager assetManager, Node rootNode) {
         this.appState = appState;
@@ -39,15 +41,34 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
         Spatial firstObject = event.getNodeA();
         Spatial secondObject = event.getNodeB();
 
-        if (firstObject.getName().equals(BALL_NAME)) {
+        if (firstObject.getName().equals(BALL_NAME) || firstObject.getName().equals(TARGET_NAME)) {
             firstObject.removeFromParent();
             appState.getPhysicsSpace().remove(firstObject);
-            instantiateExplosion(firstObject);
-        } else if (secondObject.getName().equals(BALL_NAME)) {
+            if (firstObject.getName().equals(BALL_NAME)) {
+                instantiateExplosion(firstObject);
+            }
+        } 
+        if (secondObject.getName().equals(BALL_NAME) || secondObject.getName().equals(TARGET_NAME)) {
             secondObject.removeFromParent();
             appState.getPhysicsSpace().remove(secondObject);
-            instantiateExplosion(secondObject);
+            if (secondObject.getName().equals(BALL_NAME)) {
+                instantiateExplosion(firstObject);
+            }
         }
+    }
+    
+    public boolean canShoot() {
+        return canShoot;
+    }
+    
+    public void setCanShoot(boolean canShoot) {
+        this.canShoot = canShoot;
+    }
+    
+    public void shoot(Vector3f direction, Vector3f location) {
+        canShoot = false;
+        FlyingObject bullet = FlyingObjectFactory.createBullet(direction, location);
+        new BulletGeometry(assetManager, rootNode, appState, bullet);
     }
 
     private void instantiateExplosion(Spatial spatial) {
