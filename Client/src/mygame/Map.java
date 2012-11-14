@@ -17,6 +17,8 @@ import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,14 +29,30 @@ public class Map extends GeometryObject {
     private Material floorMat;
     private RigidBodyControl floorPhy;
     private static final Box floor;
+    
+    private Hut pullHut;
+    private Hut markHut;
+    
+    private List<ShootingSpot> shootingSpots = new ArrayList<ShootingSpot>();
 
     static {
-        floor = new Box(Vector3f.ZERO, 240f, 0.1f, 120f);
+        floor = new Box(Vector3f.ZERO, 350f, 0.1f, 200f);
         floor.scaleTextureCoordinates(new Vector2f(9, 18));
     }
 
     public Map(AssetManager assetManager, Node rootNode, BulletAppState state) {
         super(assetManager, rootNode, state);
+        instantiateObject();
+        pullHut = new Hut(assetManager, rootNode, appState, new Vector3f(-80f, 5f,30f));
+        markHut = new Hut(assetManager, rootNode, appState, new Vector3f(80f, 5f, 30f));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-40f, 2f, -70f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-30f, 2f, -90f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-20f, 2f, -110f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-8f, 2f, -130f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(8f, 2f, -130f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(20f, 2f, -110f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(30f, 2f, -90f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(40f, 2f, -70f)));
     }
 
     @Override
@@ -52,7 +70,6 @@ public class Map extends GeometryObject {
         floorPhy = new RigidBodyControl(0.0f);
         floorGeo.addControl(floorPhy);
         appState.getPhysicsSpace().add(floorPhy);
-        rootNode.attachChild(SkyFactory.createSky(
-            assetManager, "Textures/Sky/Bright/BrightSky.dds", false));
+        rootNode.attachChild(SkyFactory.createSky(assetManager, "Textures/Sky/Bright/BrightSky.dds", false));
     }
 }

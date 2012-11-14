@@ -22,8 +22,6 @@ public abstract class GeometryObject {
         this.assetManager = assetManager;
         this.rootNode = rootNode;
         this.appState = state;
-        
-        instantiateObject();
     }
     
     protected abstract void instantiateObject();
