@@ -36,7 +36,7 @@ public class Client extends SimpleApplication {
         initializeCamera();
         initializeClient();
         instantiateObjects();
-        player = new Player(bulletAppState);
+        player = new Player(bulletAppState, assetManager, rootNode);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Client extends SimpleApplication {
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
             if (name.equals(SHOOT_BUTTON) && !isPressed) {
-                FlyingObject bullet = FlyingObjectFactory.createBullet(100, cam.getDirection(), cam.getLocation());
+                FlyingObject bullet = FlyingObjectFactory.createBullet(cam.getDirection(), cam.getLocation());
                 new BulletGeometry(assetManager, rootNode, bulletAppState, bullet);
             }
         }
