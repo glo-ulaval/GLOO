@@ -45,7 +45,7 @@ public class BulletGeometry extends GeometryObject {
         Texture texture = assetManager.loadTexture(key);
         ballMat.setTexture("ColorMap", texture);
 
-        Geometry ballGeo = new Geometry("cannon ball", sphere);
+        Geometry ballGeo = new Geometry("Ball", sphere);
         ballGeo.setMaterial(ballMat);
         rootNode.attachChild(ballGeo);
         ballGeo.setLocalTranslation(bullet.getPosition());
