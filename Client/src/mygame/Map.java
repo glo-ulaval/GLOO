@@ -32,7 +32,7 @@ public class Map extends GeometryObject {
     private Hut hut2;
 
     static {
-        floor = new Box(Vector3f.ZERO, 240f, 0.1f, 120f);
+        floor = new Box(Vector3f.ZERO, 350f, 0.1f, 200f);
         floor.scaleTextureCoordinates(new Vector2f(9, 18));
     }
 

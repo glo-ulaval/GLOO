@@ -62,14 +62,14 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
         fire.setImagesY(2); // 2x2 texture animation
         fire.setEndColor(new ColorRGBA(1f, 0f, 0f, 1f));   // red
         fire.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
-        fire.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
-        fire.setStartSize(1.5f);
+        fire.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 10, 0));
+        fire.setStartSize(4f);
         fire.setEndSize(0.1f);
         fire.setGravity(0, 0, 0);
         fire.setLowLife(1f);
         fire.setHighLife(3f);
         fire.setLocalTranslation(spatial.getLocalTranslation());
-        fire.getParticleInfluencer().setVelocityVariation(0.3f);
+        fire.getParticleInfluencer().setVelocityVariation(0.6f);
         fire.setParticlesPerSec(0);
         rootNode.attachChild(fire);
         fire.emitAllParticles();
