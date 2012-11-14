@@ -17,9 +17,9 @@ public class Hut extends GeometryObject {
     private Material hutMat;
     private RigidBodyControl hutPhy;
     private static final Box hut;
-    private static final float x = 5f;
-    private static final float y = 6f;
-    private static final float z = 5f;
+    private static final float x = 8f;
+    private static final float y = 12f;
+    private static final float z = 10f;
     private Vector3f position;
 
     static {

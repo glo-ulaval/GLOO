@@ -50,8 +50,8 @@ public class Client extends SimpleApplication {
     }
 
     private void initializeCamera() {
-        cam.setLocation(new Vector3f(10f, 8f, 15f));
-        cam.lookAt(new Vector3f(2, 2, 0), Vector3f.UNIT_Y);
+        cam.setLocation(new Vector3f(0, 38f, -150f));
+        cam.lookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
     }
 
     private void initializeClient() {

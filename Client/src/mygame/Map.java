@@ -17,6 +17,8 @@ import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -28,8 +30,10 @@ public class Map extends GeometryObject {
     private RigidBodyControl floorPhy;
     private static final Box floor;
     
-    private Hut hut1;
-    private Hut hut2;
+    private Hut pullHut;
+    private Hut markHut;
+    
+    private List<ShootingSpot> shootingSpots = new ArrayList<ShootingSpot>();
 
     static {
         floor = new Box(Vector3f.ZERO, 240f, 0.1f, 120f);
@@ -39,8 +43,16 @@ public class Map extends GeometryObject {
     public Map(AssetManager assetManager, Node rootNode, BulletAppState state) {
         super(assetManager, rootNode, state);
         instantiateObject();
-        hut1 = new Hut(assetManager, rootNode, appState, new Vector3f(50f, 5f, 0));
-        hut2 = new Hut(assetManager, rootNode, appState, new Vector3f(0, 5f, 50f));
+        pullHut = new Hut(assetManager, rootNode, appState, new Vector3f(-80f, 5f,30f));
+        markHut = new Hut(assetManager, rootNode, appState, new Vector3f(80f, 5f, 30f));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-40f, 2f, -70f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-30f, 2f, -90f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-20f, 2f, -110f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-8f, 2f, -130f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(8f, 2f, -130f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(20f, 2f, -110f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(30f, 2f, -90f)));
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(40f, 2f, -70f)));
     }
 
     @Override
@@ -58,7 +70,6 @@ public class Map extends GeometryObject {
         floorPhy = new RigidBodyControl(0.0f);
         floorGeo.addControl(floorPhy);
         appState.getPhysicsSpace().add(floorPhy);
-        rootNode.attachChild(SkyFactory.createSky(
-            assetManager, "Textures/Sky/Bright/BrightSky.dds", false));
+        rootNode.attachChild(SkyFactory.createSky(assetManager, "Textures/Sky/Bright/BrightSky.dds", false));
     }
 }
