@@ -3,8 +3,10 @@ package mygame;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.font.BitmapText;
+import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
@@ -81,7 +83,7 @@ public class GameClient extends SimpleApplication {
     private void initializeClient() {
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
-        inputManager.addMapping(SHOOT_BUTTON, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        inputManager.addMapping(SHOOT_BUTTON, new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addListener(actionListener, SHOOT_BUTTON);
     }
 
@@ -94,7 +96,8 @@ public class GameClient extends SimpleApplication {
     }
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
-            if (name.equals(SHOOT_BUTTON) && !isPressed) {
+            Player currentPlayer = currentTeam.getCurrentPlayer();
+            if (name.equals(SHOOT_BUTTON) && !isPressed && currentPlayer.canShoot()) {
                 currentTeam.getCurrentPlayer().shoot(cam.getDirection(), cam.getLocation());
                 map.shootTarget(); // TO REMOVE
             }
