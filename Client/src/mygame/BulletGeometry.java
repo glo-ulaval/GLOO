@@ -35,7 +35,7 @@ public class BulletGeometry extends GeometryObject {
         mesh = assetManager.loadModel("Models/SpaceCraft/Rocket.mesh.xml");
         mesh.setName("Ball");
         mesh.setLocalScale(3, 3, 3);
-        mesh.rotate(0.0f, 60.0f, 0.0f);
+        mesh.rotate(15f, 0.0f, 5.0f);
         ballMat = new Material(
                 assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         ballMat.setTexture("ColorMap",
