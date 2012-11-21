@@ -29,7 +29,10 @@ public class GameClient extends SimpleApplication {
     com.jme3.network.Client client;
     private BulletAppState bulletAppState;
     private Map map;
-    private BitmapText text;
+    
+    private BitmapText scoreText;
+    private BitmapText playerText;
+    
     private Team team1;
     private Team team2;
     private Team currentTeam;
@@ -61,7 +64,8 @@ public class GameClient extends SimpleApplication {
 
     @Override
     public void simpleUpdate(float tpf) {
-        text.setText(getGuiText());
+        scoreText.setText(getScoreText());
+        playerText.setText(getPlayerText());
     }
 
     @Override
@@ -84,8 +88,8 @@ public class GameClient extends SimpleApplication {
 
     private void instantiateObjects() {
         map = new Map(assetManager, rootNode, bulletAppState);
-        team1 = new Team(bulletAppState, assetManager, rootNode);
-        team2 = new Team(bulletAppState, assetManager, rootNode);
+        team1 = new Team(1,bulletAppState, assetManager, rootNode);
+        team2 = new Team(2,bulletAppState, assetManager, rootNode);
         currentTeam = team1;
         initializeGui();
     }
@@ -103,14 +107,14 @@ public class GameClient extends SimpleApplication {
         public void messageReceived(Client source, Message message) {
             if (message instanceof NetworkMessages.NetworkMessage) {
                 NetworkMessages.NetworkMessage networkMessage = (NetworkMessages.NetworkMessage) message;
-                if (text != null) {
-                    text.setText("Client received: '" + networkMessage.getMessage() + "'");
+                if (scoreText != null) {
+                    scoreText.setText("Client received: '" + networkMessage.getMessage() + "'");
                 }
             }
             if (message instanceof NetworkMessages.GameUpdateMessage) {
                 NetworkMessages.GameUpdateMessage updateMessage = (NetworkMessages.GameUpdateMessage) message;
-                if (text != null) {
-                    text.setText("Ronde en cours : " + updateMessage.getPosition() + " || Score équipe 1 = " + updateMessage.getTeam1Score() + " | Score équipe 2 = " + updateMessage.getTeam2Score());
+                if (scoreText != null) {
+                    scoreText.setText("Ronde en cours : " + updateMessage.getPosition() + " || Score équipe 1 = " + updateMessage.getTeam1Score() + " | Score équipe 2 = " + updateMessage.getTeam2Score());
                 }
                 client.send(new NetworkMessages.NetworkMessage("message received"));
             }
@@ -124,14 +128,23 @@ public class GameClient extends SimpleApplication {
     private void initializeGui() {
         guiNode.detachAllChildren();
         guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
-        text = new BitmapText(guiFont, false);
-        text.setSize(guiFont.getCharSet().getRenderedSize());
-        text.setText(getGuiText());
-        text.setLocalTranslation(200, text.getLineHeight(), 0);
-        guiNode.attachChild(text);
+        scoreText = new BitmapText(guiFont, false);
+        scoreText.setSize(guiFont.getCharSet().getRenderedSize());
+        scoreText.setText(getScoreText());
+        scoreText.setLocalTranslation(200, scoreText.getLineHeight(), 0);
+        playerText = new BitmapText(guiFont, false);
+        playerText.setSize(guiFont.getCharSet().getRenderedSize());
+        playerText.setText(getPlayerText());
+        playerText.setLocalTranslation(475, 475, 0);
+        guiNode.attachChild(scoreText);
+        guiNode.attachChild(playerText);
     }
     
-    private String getGuiText() {
+    private String getPlayerText() {
+        return "Équipe : " + currentTeam.getTeamNumber() + " || Joueur : " + currentTeam.getCurrentPlayer().getPlayerNumber();
+     }
+    
+    private String getScoreText() {
         return "Ronde en cours : " + round + " || Score équipe 1 = " + team1.getTeamScore() + " | Score équipe 2 = " + team2.getTeamScore();
     }
 }

@@ -32,6 +32,7 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
     private boolean canShoot = true;
     private AudioNode audio;
     private int score = 0;
+    private int playerNumber;
 
     public Player(BulletAppState appState, AssetManager assetManager, Node rootNode) {
         this.appState = appState;
@@ -69,12 +70,20 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
         return canShoot;
     }
     
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+    
     public int getScore() {
         return score;
     }
 
     public void setCanShoot(boolean canShoot) {
         this.canShoot = canShoot;
+    }
+    
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
     }
 
     public void shoot(Vector3f direction, Vector3f location) {
