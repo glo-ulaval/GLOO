@@ -95,8 +95,9 @@ public class GameClient extends SimpleApplication {
     
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
-            if (name.equals(SHOOT_BUTTON) && !isPressed && player.canShoot()) {
+            if (name.equals(SHOOT_BUTTON) && !isPressed ) {
                 player.shoot(cam.getDirection(), cam.getLocation());
+                map.shootTarget();
             }
         }
     };

@@ -5,6 +5,7 @@
 package mygame;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
@@ -29,6 +30,7 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
     private AssetManager assetManager;
     private Node rootNode;
     private boolean canShoot = true;
+    private AudioNode audio;
 
     public Player(BulletAppState appState, AssetManager assetManager, Node rootNode) {
         this.appState = appState;
@@ -94,5 +96,10 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
         fire.setParticlesPerSec(0);
         rootNode.attachChild(fire);
         fire.emitAllParticles();
+        audio = new AudioNode(assetManager, "Sounds/Explosion.wav", false);
+        audio.setLooping(false);
+        audio.setVolume(3);
+        rootNode.attachChild(audio);
+        audio.playInstance();
     }
 }

@@ -6,6 +6,7 @@ package mygame;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
@@ -27,13 +28,12 @@ import java.util.Random;
  */
 public class Map extends GeometryObject {
 
+    private AudioNode audio;
     private Material floorMat;
     private RigidBodyControl floorPhy;
     private static final Box floor;
-    
     private Hut pullHut;
     private Hut markHut;
-    
     private List<ShootingSpot> shootingSpots = new ArrayList<ShootingSpot>();
 
     static {
@@ -44,7 +44,8 @@ public class Map extends GeometryObject {
     public Map(AssetManager assetManager, Node rootNode, BulletAppState state) {
         super(assetManager, rootNode, state);
         instantiateObject();
-        pullHut = new Hut(assetManager, rootNode, appState, new Vector3f(-80f, 5f,30f));
+        initializeAudio();
+        pullHut = new Hut(assetManager, rootNode, appState, new Vector3f(-80f, 5f, 30f));
         markHut = new Hut(assetManager, rootNode, appState, new Vector3f(80f, 5f, 30f));
         shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-50f, 2f, -50f)));
         shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(-30f, 2f, -75f)));
@@ -52,10 +53,10 @@ public class Map extends GeometryObject {
         shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(0f, 2f, -100f)));
         shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(15f, 2f, -90f)));
         shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(30f, 2f, -75f)));
-        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(50f, 2f, -50f))); 
+        shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(50f, 2f, -50f)));
         shootingSpots.add(new ShootingSpot(assetManager, rootNode, appState, new Vector3f(0f, 2f, 0f)));
     }
-    
+
     public void shootTarget() {
         int random = new Random().nextInt(3);
         if (random == 0) {
@@ -66,7 +67,7 @@ public class Map extends GeometryObject {
             pullHut.shootTarget(false);
             markHut.shootTarget(true);
         }
-        
+
     }
 
     @Override
@@ -86,8 +87,18 @@ public class Map extends GeometryObject {
         appState.getPhysicsSpace().add(floorPhy);
         rootNode.attachChild(SkyFactory.createSky(assetManager, "Textures/Sky/Bright/BrightSky.dds", false));
     }
-    
-    public ShootingSpot getShootingSpot(int index){
+
+    public ShootingSpot getShootingSpot(int index) {
         return this.shootingSpots.get(index);
+    }
+
+    private void initializeAudio() {
+        audio = new AudioNode(assetManager, "Sound/Environment/Nature.ogg", false);
+        audio.setLooping(true);
+        audio.setPositional(true);
+        audio.setLocalTranslation(Vector3f.ZERO.clone());
+        audio.setVolume(3);
+        rootNode.attachChild(audio);
+        audio.play();
     }
 }
