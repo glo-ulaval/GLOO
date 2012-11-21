@@ -29,10 +29,8 @@ public class GameClient extends SimpleApplication {
     com.jme3.network.Client client;
     private BulletAppState bulletAppState;
     private Map map;
-    
     private BitmapText scoreText;
     private BitmapText playerText;
-    
     private Team team1;
     private Team team2;
     private Team currentTeam;
@@ -50,6 +48,7 @@ public class GameClient extends SimpleApplication {
         initializeClient();
         instantiateObjects();
         initializeCamera();
+        initCrossHairs();
         try {
             client = Network.connectToServer("localhost", AngryPidgeServerMain.PORT);
             client.start();
@@ -88,8 +87,8 @@ public class GameClient extends SimpleApplication {
 
     private void instantiateObjects() {
         map = new Map(assetManager, rootNode, bulletAppState);
-        team1 = new Team(1,bulletAppState, assetManager, rootNode);
-        team2 = new Team(2,bulletAppState, assetManager, rootNode);
+        team1 = new Team(1, bulletAppState, assetManager, rootNode);
+        team2 = new Team(2, bulletAppState, assetManager, rootNode);
         currentTeam = team1;
         initializeGui();
     }
@@ -124,7 +123,7 @@ public class GameClient extends SimpleApplication {
     public void setCameraLocation(Vector3f position) {
         this.cam.setLocation(position);
     }
-    
+
     private void initializeGui() {
         guiNode.detachAllChildren();
         guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
@@ -139,11 +138,22 @@ public class GameClient extends SimpleApplication {
         guiNode.attachChild(scoreText);
         guiNode.attachChild(playerText);
     }
-    
+
+    private void initCrossHairs() {
+        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapText ch = new BitmapText(guiFont, false);
+        ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+        ch.setText("+");
+        ch.setLocalTranslation(
+                settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
+                settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
+        guiNode.attachChild(ch);
+    }
+
     private String getPlayerText() {
         return "Équipe : " + currentTeam.getTeamNumber() + " || Joueur : " + currentTeam.getCurrentPlayer().getPlayerNumber();
-     }
-    
+    }
+
     private String getScoreText() {
         return "Ronde en cours : " + round + " || Score équipe 1 = " + team1.getTeamScore() + " | Score équipe 2 = " + team2.getTeamScore();
     }
