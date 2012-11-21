@@ -36,9 +36,9 @@ public class Hut extends GeometryObject {
     public void shootTarget(boolean isMark) {
         FlyingObject target;
         if (isMark) {
-            target = FlyingObjectFactory.createTarget(new Vector3f(-8f,8f,0), new Vector3f(position.x + 25.0f, position.y + 25.0f, position.z));
+            target = FlyingObjectFactory.createTarget(new Vector3f(-8f,8f,0), new Vector3f(position.x + 25.0f, position.y + 35.0f, position.z));
         } else {
-            target = FlyingObjectFactory.createTarget(new Vector3f(8f,8f,0), new Vector3f(position.x, position.y + 15.0f, position.z));
+            target = FlyingObjectFactory.createTarget(new Vector3f(8f,8f,0), new Vector3f(position.x, position.y + 25.0f, position.z));
         }
 
         new TargetGeometry(assetManager, rootNode, appState, target);

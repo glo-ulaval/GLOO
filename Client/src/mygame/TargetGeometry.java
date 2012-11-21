@@ -19,7 +19,7 @@ public class TargetGeometry extends GeometryObject {
     private FlyingObject target;
 
     static {
-        sphere = new Sphere(32, 32, 2.5f, true, false);
+        sphere = new Sphere(32, 32, 5f, true, false);
         sphere.setTextureMode(TextureMode.Projected);
     }
 
