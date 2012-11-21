@@ -33,6 +33,7 @@ public class GameClient extends SimpleApplication {
     private Team team1;
     private Team team2;
     private Team currentTeam;
+    private int round = 1;
 
     public static void main(String[] args) {
         GameClient app = new GameClient();
@@ -60,7 +61,7 @@ public class GameClient extends SimpleApplication {
 
     @Override
     public void simpleUpdate(float tpf) {
-        //TODO: add update code
+        text.setText(getGuiText());
     }
 
     @Override
@@ -83,10 +84,10 @@ public class GameClient extends SimpleApplication {
 
     private void instantiateObjects() {
         map = new Map(assetManager, rootNode, bulletAppState);
-        initializeGui();
         team1 = new Team(bulletAppState, assetManager, rootNode);
         team2 = new Team(bulletAppState, assetManager, rootNode);
         currentTeam = team1;
+        initializeGui();
     }
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
@@ -125,8 +126,12 @@ public class GameClient extends SimpleApplication {
         guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
         text = new BitmapText(guiFont, false);
         text.setSize(guiFont.getCharSet().getRenderedSize());
-        text.setText("Ronde en cours : 1 || Score équipe 1 = 0 | Score équipe 2 = 0");
-        text.setLocalTranslation(300, text.getLineHeight(), 0);
+        text.setText(getGuiText());
+        text.setLocalTranslation(200, text.getLineHeight(), 0);
         guiNode.attachChild(text);
+    }
+    
+    private String getGuiText() {
+        return "Ronde en cours : " + round + " || Score équipe 1 = " + team1.getTeamScore() + " | Score équipe 2 = " + team2.getTeamScore();
     }
 }
