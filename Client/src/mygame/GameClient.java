@@ -42,10 +42,8 @@ public class GameClient extends SimpleApplication {
     private BitmapText scoreText;
     private BitmapText playerText;
     private BitmapText timerText;
-    // Timer
-    private final static ScheduledExecutorService timer = Executors.newScheduledThreadPool(1);
-    private int timerCount = 4;
-    private AudioNode timerAudio;
+    
+    private Game game;
 
     public static void main(String[] args) {
         GameClient app = new GameClient();
@@ -59,7 +57,6 @@ public class GameClient extends SimpleApplication {
         initializeClient();
         instantiateObjects();
         initializeCamera();
-        initializeAudio();
         initCrossHairs();
         try {
             client = Network.connectToServer("localhost", AngryPidgeServerMain.PORT);
@@ -87,11 +84,12 @@ public class GameClient extends SimpleApplication {
     
     @Override
     public void destroy() {
-        timer.shutdown();
+        game.shutdown();
     }
 
     private void startGame() {
-        timer.scheduleWithFixedDelay(counterRunnable, 1, 1, TimeUnit.SECONDS);
+        game = new Game(map, timerText);
+        game.start(currentTeam);
     }
 
     private void initializeCamera() {
@@ -104,16 +102,7 @@ public class GameClient extends SimpleApplication {
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
         inputManager.addMapping(SHOOT_BUTTON, new KeyTrigger(KeyInput.KEY_SPACE));
-         inputManager.addMapping("toto", new KeyTrigger(KeyInput.KEY_1));
         inputManager.addListener(actionListener, SHOOT_BUTTON);
-        inputManager.addListener(actionListener, "toto");
-    }
-    
-    private void initializeAudio() {
-        timerAudio = new AudioNode(assetManager, "Sounds/Explosion.wav", false);
-        timerAudio.setLooping(false);
-        timerAudio.setVolume(4);
-        rootNode.attachChild(timerAudio);
     }
 
     private void instantiateObjects() {
@@ -197,24 +186,4 @@ public class GameClient extends SimpleApplication {
     private String getScoreText() {
         return "Ronde en cours : " + round + " || Score équipe 1 = " + team1.getTeamScore() + " | Score équipe 2 = " + team2.getTeamScore();
     }
-
-    private void setTimerText(String value) {
-        timerText.setText(value);
-    }
-    
-    final Runnable counterRunnable = new Runnable() {
-        public void run() {
-            timerCount--;
-            if (timerCount > 0) {
-                setTimerText(String.valueOf(timerCount));
-            } else if (timerCount == 0) {
-                setTimerText("GO!!!");
-                currentTeam.getCurrentPlayer().setCanShoot(true);
-            } else {
-                map.shootTarget(); // Shoot target is when the timer reaches -1 to give time to the player to shoot
-                setTimerText("");
-                timer.shutdown();
-            }
-        }
-    };
 }
