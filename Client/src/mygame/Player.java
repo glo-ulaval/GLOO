@@ -31,6 +31,7 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
     private Node rootNode;
     private boolean canShoot = true;
     private AudioNode audio;
+    private int score = 0;
 
     public Player(BulletAppState appState, AssetManager assetManager, Node rootNode) {
         this.appState = appState;
@@ -49,24 +50,29 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
             if (firstObject.getName().equals(BALL_NAME)) {
                 instantiateExplosion(firstObject);
             }
-        } 
+        }
         if (secondObject.getName().equals(BALL_NAME) || secondObject.getName().equals(TARGET_NAME)) {
             secondObject.removeFromParent();
             appState.getPhysicsSpace().remove(secondObject);
             if (secondObject.getName().equals(BALL_NAME)) {
-                instantiateExplosion(firstObject);
+                instantiateExplosion(secondObject);
             }
         }
+
+        if ((firstObject.getName().equals(BALL_NAME) && secondObject.getName().equals(TARGET_NAME)) || (secondObject.getName().equals(BALL_NAME) && firstObject.getName().equals(TARGET_NAME))) {
+            score++;
+        }
+
     }
-    
+
     public boolean canShoot() {
         return canShoot;
     }
-    
+
     public void setCanShoot(boolean canShoot) {
         this.canShoot = canShoot;
     }
-    
+
     public void shoot(Vector3f direction, Vector3f location) {
         canShoot = false;
         FlyingObject bullet = FlyingObjectFactory.createBullet(direction, location);
