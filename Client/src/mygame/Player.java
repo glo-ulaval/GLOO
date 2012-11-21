@@ -29,7 +29,7 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
     private BulletAppState appState;
     private AssetManager assetManager;
     private Node rootNode;
-    private boolean canShoot = true;
+    private boolean canShoot = false;
     private AudioNode audio;
     private int score = 0;
     private int playerNumber;
