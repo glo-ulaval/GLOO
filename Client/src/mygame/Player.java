@@ -68,6 +68,10 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
     public boolean canShoot() {
         return canShoot;
     }
+    
+    public int getScore() {
+        return score;
+    }
 
     public void setCanShoot(boolean canShoot) {
         this.canShoot = canShoot;
