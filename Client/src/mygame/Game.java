@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class Game {
     
     // Timer
-    private final static ScheduledExecutorService timer = Executors.newScheduledThreadPool(1);
+    private final static ScheduledExecutorService timer = Executors.newSingleThreadScheduledExecutor();
     private int timerCount = 4;
     
     private Team currentTeam;
