@@ -28,6 +28,10 @@ public class Game {
         this.bitmapText = text;
     }
     
+    public void setTimerCount(int count) {
+        timerCount = count;
+    }
+     
     public void shutdown() {
         timer.shutdown();
     }
@@ -46,10 +50,9 @@ public class Game {
             } else if (timerCount == 0) {
                 setTimerText("GO!!!");
                 currentTeam.getCurrentPlayer().setCanShoot(true);
-            } else {
+            } else if (timerCount == -1) {
                 map.shootTarget(); // Shoot target is when the timer reaches -1 to give time to the player to shoot
                 setTimerText("");
-                timer.shutdown();
             }
         }
     };
