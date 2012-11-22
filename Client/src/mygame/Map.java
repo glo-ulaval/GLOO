@@ -29,6 +29,7 @@ import java.util.Random;
 public class Map extends GeometryObject {
 
     private AudioNode audio;
+    private AudioNode pigeon;
     private Material floorMat;
     private RigidBodyControl floorPhy;
     private static final Box floor;
@@ -67,7 +68,7 @@ public class Map extends GeometryObject {
             pullHut.shootTarget(false);
             markHut.shootTarget(true);
         }
-
+        pigeon.playInstance();
     }
 
     @Override
@@ -99,6 +100,10 @@ public class Map extends GeometryObject {
         audio.setLocalTranslation(Vector3f.ZERO.clone());
         audio.setVolume(3);
         rootNode.attachChild(audio);
+        pigeon = new AudioNode(assetManager, "Sounds/Pigeon.wav", false);
+        pigeon.setLooping(false);
+        pigeon.setVolume(3);
+        rootNode.attachChild(pigeon);
         audio.play();
     }
 }

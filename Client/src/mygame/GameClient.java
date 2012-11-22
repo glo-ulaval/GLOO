@@ -67,7 +67,7 @@ public class GameClient extends SimpleApplication {
             Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        game = new Game(map, timerText);
+        game = new Game(map, timerText, assetManager, rootNode);
     }
 
     @Override
