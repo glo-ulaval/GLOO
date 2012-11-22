@@ -46,6 +46,7 @@ public class Game {
                 count("3");
             }
         } else {
+            timerCount = 3;
             timer.reset();
         }
     }
