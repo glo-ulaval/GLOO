@@ -134,7 +134,7 @@ public class GameClient extends SimpleApplication {
                 NetworkMessages.GameUpdateMessage updateMessage = (NetworkMessages.GameUpdateMessage) message;
                 if (scoreText != null) {
                     scoreText.setText("Ronde en cours : " + updateMessage.getPosition() + " || Score équipe 1 = " + updateMessage.getTeam1Score() + " | Score équipe 2 = " + updateMessage.getTeam2Score());
-                    movePlayerToNextRound();
+                    //movePlayerToNextRound();
                 }
                 client.send(new NetworkMessages.NetworkMessage("message received"));
             }
@@ -198,11 +198,11 @@ public class GameClient extends SimpleApplication {
     }
 
     private void movePlayerToNextRound() {
+        game.setIsCountdownStarted(true);
         round++;
         Vector3f nextSpotPosition = map.getShootingSpot(round-1).getPosition();
         Vector3f nextCamPosition = new Vector3f(nextSpotPosition.x, CAM_HEIGHT, nextSpotPosition.z);
         cam.setLocation(nextCamPosition);
         roundText.setText("");
-        game.setIsCountdownStarted(true);
     }
 }
