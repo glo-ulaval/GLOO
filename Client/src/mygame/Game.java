@@ -5,57 +5,52 @@
 package mygame;
 
 import com.jme3.font.BitmapText;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import com.jme3.system.Timer;
 
 /**
  *
  * @author Vincent Séguin
  */
 public class Game {
-    
-    // Timer
-    private final static ScheduledExecutorService timer = Executors.newSingleThreadScheduledExecutor();
-    private int timerCount = 4;
-    
-    private Team currentTeam;
+
     private Map map;
     private BitmapText bitmapText;
-    
+    private boolean isCountdownStarted = false;
+
     public Game(Map map, BitmapText text) {
         this.map = map;
         this.bitmapText = text;
     }
-    
-    public void setTimerCount(int count) {
-        timerCount = count;
-    }
-     
-    public void shutdown() {
-        timer.shutdown();
-    }
-    
-    public void start(Team currentTeam) {
-        this.currentTeam = currentTeam;
-        timerCount = 4;
-        timer.scheduleWithFixedDelay(counterRunnable, 1, 1, TimeUnit.SECONDS);
-    }
-    
-    final Runnable counterRunnable = new Runnable() {
-        public void run() {
-            timerCount--;
-            if (timerCount > 0) {
-                setTimerText(String.valueOf(timerCount));
-            } else if (timerCount == 0) {
-                setTimerText("GO!!!");
+
+    public void update(com.jme3.system.Timer timer, Team currentTeam) {
+        if (isCountdownStarted()) {
+            if (timer.getTimeInSeconds() >= 5) {
                 currentTeam.getCurrentPlayer().setCanShoot(true);
-            } else if (timerCount == -1) {
-                map.shootTarget(); // Shoot target is when the timer reaches -1 to give time to the player to shoot
+                map.shootTarget();
                 setTimerText("");
+                timer.reset();
+                setIsCountdownStarted(false);
+            } else if (timer.getTimeInSeconds() >= 4) {
+                setTimerText("GO!!!");
+            } else if (timer.getTimeInSeconds() >= 3) {
+                setTimerText("1");
+            } else if (timer.getTimeInSeconds() >= 2) {
+                setTimerText("2");
+            } else if (timer.getTimeInSeconds() >= 1) {
+                setTimerText("3");
             }
+        } else {
+            timer.reset();
         }
-    };
+    }
+
+    public boolean isCountdownStarted() {
+        return isCountdownStarted;
+    }
+
+    public void setIsCountdownStarted(boolean isStarted) {
+        this.isCountdownStarted = isStarted;
+    }
     
     private void setTimerText(String value) {
         bitmapText.setText(value);
