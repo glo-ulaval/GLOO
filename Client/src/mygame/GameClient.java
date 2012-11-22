@@ -68,28 +68,19 @@ public class GameClient extends SimpleApplication {
             Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        startGame();
+        game = new Game(map, timerText);
     }
 
     @Override
     public void simpleUpdate(float tpf) {
         scoreText.setText(getScoreText());
         playerText.setText(getPlayerText());
+        game.update(getTimer(), currentTeam);
     }
 
     @Override
     public void simpleRender(RenderManager rm) {
         //TODO: add render code
-    }
-
-    @Override
-    public void destroy() {
-        game.shutdown();
-    }
-
-    private void startGame() {
-        game = new Game(map, timerText);
-        game.start(currentTeam);
     }
 
     private void initializeCamera() {
