@@ -43,6 +43,7 @@ public class GameClient extends SimpleApplication {
     private BitmapText playerText;
     private BitmapText timerText;
     private BitmapText roundText;
+    
     private Game game;
 
     public static void main(String[] args) {
