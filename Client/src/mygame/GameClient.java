@@ -1,12 +1,13 @@
 package mygame;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
@@ -16,9 +17,6 @@ import com.jme3.network.Network;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.JmeContext;
 import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mygame.util.NetworkMessages;
@@ -31,18 +29,20 @@ import mygame.util.NetworkMessages;
 public class GameClient extends SimpleApplication {
 
     private static final String SHOOT_BUTTON = "shoot";
+    private static final String NEXT_BUTTON = "next";
+    private static final Float CAM_HEIGHT = 8f;
     com.jme3.network.Client client;
     private BulletAppState bulletAppState;
     private Map map;
     private Team team1;
     private Team team2;
     private Team currentTeam;
-    private int round = 1;
+    private int round = 0;
     // GUI
     private BitmapText scoreText;
     private BitmapText playerText;
     private BitmapText timerText;
-    
+        
     private Game game;
 
     public static void main(String[] args) {
@@ -101,8 +101,11 @@ public class GameClient extends SimpleApplication {
     private void initializeClient() {
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
-        inputManager.addMapping(SHOOT_BUTTON, new KeyTrigger(KeyInput.KEY_SPACE));
+        inputManager.addMapping(SHOOT_BUTTON, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(actionListener, SHOOT_BUTTON);
+        
+        inputManager.addMapping(NEXT_BUTTON, new KeyTrigger(KeyInput.KEY_SPACE));
+        inputManager.addListener(actionListener, NEXT_BUTTON);
     }
 
     private void instantiateObjects() {
@@ -117,7 +120,10 @@ public class GameClient extends SimpleApplication {
             Player currentPlayer = currentTeam.getCurrentPlayer();
             if (name.equals(SHOOT_BUTTON) && !isPressed && currentPlayer.canShoot()) {
                 currentTeam.getCurrentPlayer().shoot(cam.getDirection(), cam.getLocation());
-            }
+            }else if(name.equals(NEXT_BUTTON) && !isPressed){
+                movePlayerToNextRound();
+            } 
+            
         }
     };
 
@@ -185,5 +191,12 @@ public class GameClient extends SimpleApplication {
 
     private String getScoreText() {
         return "Ronde en cours : " + round + " || Score équipe 1 = " + team1.getTeamScore() + " | Score équipe 2 = " + team2.getTeamScore();
+    }
+    
+    private void movePlayerToNextRound(){
+        round++;
+        Vector3f nextSpotPosition = map.getShootingSpot(round).getPosition();
+        Vector3f nextCamPosition = new Vector3f(nextSpotPosition.x, CAM_HEIGHT, nextSpotPosition.z);
+        cam.setLocation(nextCamPosition);
     }
 }
