@@ -19,7 +19,7 @@ public class Game {
     private AudioNode goSound;
     private Map map;
     private BitmapText bitmapText;
-    private boolean isCountdownStarted = false;
+    private boolean isCountdownStarted = true;
     private int timerCount = 3;
 
     public Game(Map map, BitmapText text, AssetManager manager, Node node) {
