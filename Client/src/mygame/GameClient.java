@@ -37,11 +37,13 @@ public class GameClient extends SimpleApplication {
     private Team team1;
     private Team team2;
     private Team currentTeam;
-    private int round = 0;
+    private int round = 1;
     // GUI
     private BitmapText scoreText;
     private BitmapText playerText;
     private BitmapText timerText;
+    private BitmapText roundText;
+    
     private Game game;
 
     public static void main(String[] args) {
@@ -110,6 +112,8 @@ public class GameClient extends SimpleApplication {
             Player currentPlayer = currentTeam.getCurrentPlayer();
             if (name.equals(SHOOT_BUTTON) && !isPressed && currentPlayer.canShoot()) {
                 currentTeam.getCurrentPlayer().shoot(cam.getDirection(), cam.getLocation());
+                roundText.setText("LA RONDE " + round +
+                        " EST TERMINÉE\nPATIENTEZ JUSQU'À CE QUE LES AUTRES JOUEURS TERMINENT\nLEUR RONDE.");
             } else if (name.equals(NEXT_BUTTON) && !isPressed) {
                 movePlayerToNextRound();
             }
@@ -160,9 +164,18 @@ public class GameClient extends SimpleApplication {
                 settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
                 settings.getHeight() / 2 + timerText.getLineHeight() / 2 + 200, 0);
 
+        roundText = new BitmapText(guiFont, false);
+        roundText.setSize(guiFont.getCharSet().getRenderedSize());
+        roundText.setLocalTranslation(
+                settings.getWidth() / 2 - 300,
+                settings.getHeight() / 2, 0);
+        roundText.setText("");
+
         guiNode.attachChild(scoreText);
         guiNode.attachChild(playerText);
         guiNode.attachChild(timerText);
+        guiNode.attachChild(roundText);
+
     }
 
     private void initCrossHairs() {
@@ -185,7 +198,7 @@ public class GameClient extends SimpleApplication {
 
     private void movePlayerToNextRound() {
         round++;
-        Vector3f nextSpotPosition = map.getShootingSpot(round).getPosition();
+        Vector3f nextSpotPosition = map.getShootingSpot(round-1).getPosition();
         Vector3f nextCamPosition = new Vector3f(nextSpotPosition.x, CAM_HEIGHT, nextSpotPosition.z);
         cam.setLocation(nextCamPosition);
     }
