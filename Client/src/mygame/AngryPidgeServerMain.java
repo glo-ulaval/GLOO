@@ -126,7 +126,7 @@ public class AngryPidgeServerMain extends SimpleApplication {
                 }else{
                     connectedPlayers.put(conn.getId(), 2);    
                 }
-                myServer.broadcast(Filters.in(conn), new NetworkMessages.PlayerInfoMessage(conn.getId(),connectedPlayers.get(conn.getId())));
+                myServer.broadcast(Filters.in(conn), new NetworkMessages.PlayerInfoMessage((conn.getId()+1),connectedPlayers.get(conn.getId())));
             }
         }
 
