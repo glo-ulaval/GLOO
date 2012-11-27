@@ -30,7 +30,7 @@ public class Game {
 
     public void update(com.jme3.system.Timer timer, Player player) {
         if (isCountdownStarted()) {
-            if (timer.getTimeInSeconds() >= 5) {
+            if (timer.getTimeInSeconds() >= 5 ) {
                 player.setCanShoot(true);
                 map.shootTarget();
                 setTimerText("");

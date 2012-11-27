@@ -18,7 +18,9 @@ public class NetworkMessages {
         Serializer.registerClass(NetworkMessage.class);
         Serializer.registerClass(GameUpdateMessage.class);
         Serializer.registerClass(ShootingResult.class);
-        Serializer.registerClass(ConnectionMessage.class);
+        Serializer.registerClass(GameStarted.class);
+        Serializer.registerClass(GameStop.class);
+        Serializer.registerClass(PlayerInfoMessage.class);
     }
     
     @Serializable
@@ -82,8 +84,36 @@ public class NetworkMessages {
     }
     
     @Serializable
-    public static class ConnectionMessage extends AbstractMessage{
-        public ConnectionMessage(){
+    public static class GameStarted extends AbstractMessage{
+        public GameStarted(){
+        }
+    }
+    
+    @Serializable
+    public static class GameStop extends AbstractMessage{
+        public GameStop(){
+        }
+    }
+    
+    @Serializable
+    public static class PlayerInfoMessage extends AbstractMessage{
+        private int playerNumber;
+        private int teamNumber;
+        
+        public PlayerInfoMessage(){
+        }
+        
+        public PlayerInfoMessage(int playerNumber, int teamNumber){
+            this.playerNumber = playerNumber;
+            this.teamNumber = teamNumber;
+        }
+
+        public int getPlayerNumber() {
+            return playerNumber;
+        }
+
+        public int getTeamNumber() {
+            return teamNumber;
         }
     }
     

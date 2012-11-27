@@ -72,25 +72,28 @@ public class GameClient extends SimpleApplication {
             client.start();
             NetworkMessages.initializeSerializables();
             client.addMessageListener(new ClientListener());
-            client.send(new NetworkMessages.ConnectionMessage());
         } catch (IOException ex) {
             Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        game = new Game(map, timerText, assetManager, rootNode);
+        
     }
 
     @Override
     public void simpleUpdate(float tpf) {
         playerText.setText(getPlayerText());
-        game.update(getTimer(), player);
-        i+=tpf;
-        if(i > 10 && !player.canShoot() && sendMessage){
-            client.send(new NetworkMessages.ShootingResult(player.getScore()!=0));
-            player.setScore(0);
-            i = 0;
-            sendMessage = false;
+        if(game!=null){
+           game.update(getTimer(), player); 
+           i+=tpf;
+           if(i > 13 && !player.canShoot() && sendMessage){
+                client.send(new NetworkMessages.ShootingResult(player.getScore()!=0));
+                 player.setScore(0);
+                  i = 0;
+                 sendMessage = false;
+           }
         }
+        
+       
         
     }
 
@@ -136,7 +139,7 @@ public class GameClient extends SimpleApplication {
             if (message instanceof NetworkMessages.NetworkMessage) {
                 NetworkMessages.NetworkMessage networkMessage = (NetworkMessages.NetworkMessage) message;
                 if (scoreText != null) {
-                    scoreText.setText("Client received: '" + networkMessage.getMessage() + "'");
+                    //scoreText.setText("Client received: '" + networkMessage.getMessage() + "'");
                 }
             }
             if (message instanceof NetworkMessages.GameUpdateMessage) {
@@ -145,11 +148,35 @@ public class GameClient extends SimpleApplication {
                     scoreText.setText("Ronde en cours : " + updateMessage.getPosition() + " || Score équipe 1 = " + updateMessage.getTeam1Score() + " | Score équipe 2 = " + updateMessage.getTeam2Score());
                     movePlayerToNextRound();
                 }
-                //client.send(new NetworkMessages.NetworkMessage("message received"));
+            }
+            if (message instanceof NetworkMessages.GameStarted) {
+                if (game == null) {
+                    scoreText.setText("Ronde en cours : 1 || Score équipe 1 = 0 | Score équipe 2 = 0");
+                    getTimer().reset();
+                    game = new Game(map, timerText, assetManager, rootNode);
+                }
+            }
+            if (message instanceof NetworkMessages.GameStop) {
+                closeApp();
+            }
+            if (message instanceof NetworkMessages.PlayerInfoMessage) {
+                NetworkMessages.PlayerInfoMessage playerInfoMessage = (NetworkMessages.PlayerInfoMessage) message;
+                if (playerText != null) {
+                    playerText.setText("Équipe : "+playerInfoMessage.getTeamNumber()+" || Joueur : "+ playerInfoMessage.getPlayerNumber());
+                }
             }
         }
-    }
 
+   
+    }
+    
+     private void closeApp() {
+         int i = 0;
+         while(i < 1000000) {
+             this.stop();
+         }
+     }
+     
     public void setCameraLocation(Vector3f position) {
         this.cam.setLocation(position);
     }

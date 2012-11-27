@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mygame.util.NetworkMessages;
-import mygame.util.NetworkMessages.ConnectionMessage;
 import mygame.util.NetworkMessages.NetworkMessage;
 import mygame.util.NetworkMessages.ShootingResult;
 
@@ -35,14 +34,13 @@ import mygame.util.NetworkMessages.ShootingResult;
 public class AngryPidgeServerMain extends SimpleApplication {
     public static final int PORT = 4444;
     
-    private float counter = 0;
-    private int i = 0;
     private Server myServer;
     private List<Integer> scores = Arrays.asList(0,0);
     private HashMap<Integer, Integer> connectedPlayers = new HashMap<Integer, Integer>();
     private int responseReceived = 0;
     private int round = 1;
     private int position = 1;
+    private boolean startGame = true;
 
     public static void main(String[] args) {
         AngryPidgeServerMain server = new AngryPidgeServerMain();
@@ -64,24 +62,14 @@ public class AngryPidgeServerMain extends SimpleApplication {
 
     @Override
     public void simpleUpdate(float tpf) {
+        if(connectedPlayers.size()==4 && startGame){
+            myServer.broadcast(new NetworkMessages.GameStarted());
+            startGame = false;
+        }
         if(responseReceived == 4){
             sendGameUpdate();
             responseReceived = 0;
         }
- /*       counter += tpf;
-        if(counter>=3.0f ){
-            if(i==0){
-               for(HostedConnection conn : myServer.getConnections()){
-                   myServer.broadcast(Filters.in(conn), new NetworkMessages.NetworkMessage("Équipe # "+connectedPlayers.get(conn.getId()).toString())); 
-               }
-               i++;
-            }
-            else{
-               myServer.broadcast(new NetworkMessages.GameUpdateMessage(1,2,3)); 
-               i--;
-            }
-            counter = 0;
-        }*/
     }
 
     @Override
@@ -94,7 +82,8 @@ public class AngryPidgeServerMain extends SimpleApplication {
         if(round>8){
             round = 1;
             position = 1;
-            //end game
+            startGame = true;
+            myServer.broadcast(new NetworkMessages.GameStop());
         }else{
             position++;
             myServer.broadcast(new NetworkMessages.GameUpdateMessage(position, scores.get(0), scores.get(1)));
@@ -117,7 +106,6 @@ public class AngryPidgeServerMain extends SimpleApplication {
           }
           if(message instanceof NetworkMessages.ShootingResult){
               NetworkMessages.ShootingResult shootingResultMessage = (ShootingResult) message;
-              
               if(shootingResultMessage.isHasHitTarget()){
                   int teamNumber = connectedPlayers.get(source.getId());
                   addAPointToTeam(teamNumber);
@@ -138,7 +126,7 @@ public class AngryPidgeServerMain extends SimpleApplication {
                 }else{
                     connectedPlayers.put(conn.getId(), 2);    
                 }
-                myServer.broadcast(Filters.in(conn), new NetworkMessage(connectedPlayers.get(conn.getId()).toString()));
+                myServer.broadcast(Filters.in(conn), new NetworkMessages.PlayerInfoMessage(conn.getId(),connectedPlayers.get(conn.getId())));
             }
         }
 
