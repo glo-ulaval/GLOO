@@ -28,10 +28,10 @@ public class Game {
         initializeSound(manager, node);
     }
 
-    public void update(com.jme3.system.Timer timer, Team currentTeam) {
+    public void update(com.jme3.system.Timer timer, Player player) {
         if (isCountdownStarted()) {
             if (timer.getTimeInSeconds() >= 5) {
-                currentTeam.getCurrentPlayer().setCanShoot(true);
+                player.setCanShoot(true);
                 map.shootTarget();
                 setTimerText("");
                 timer.reset();

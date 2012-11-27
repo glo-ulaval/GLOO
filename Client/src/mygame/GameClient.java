@@ -34,16 +34,13 @@ public class GameClient extends SimpleApplication {
     com.jme3.network.Client client;
     private BulletAppState bulletAppState;
     private Map map;
-    private Team team1;
-    private Team team2;
-    private Team currentTeam;
     private int round = 1;
     // GUI
     private BitmapText scoreText;
     private BitmapText playerText;
     private BitmapText timerText;
     private BitmapText roundText;
-    
+    private Player player;
     private Game game;
 
     public static void main(String[] args) {
@@ -76,7 +73,7 @@ public class GameClient extends SimpleApplication {
     public void simpleUpdate(float tpf) {
         scoreText.setText(getScoreText());
         playerText.setText(getPlayerText());
-        game.update(getTimer(), currentTeam);
+        game.update(getTimer(), player);
     }
 
     @Override
@@ -102,16 +99,13 @@ public class GameClient extends SimpleApplication {
 
     private void instantiateObjects() {
         map = new Map(assetManager, rootNode, bulletAppState);
-        team1 = new Team(1, bulletAppState, assetManager, rootNode);
-        team2 = new Team(2, bulletAppState, assetManager, rootNode);
-        currentTeam = team1;
+        player = new Player(bulletAppState,assetManager,rootNode);
         initializeGui();
     }
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean isPressed, float tpf) {
-            Player currentPlayer = currentTeam.getCurrentPlayer();
-            if (name.equals(SHOOT_BUTTON) && !isPressed && currentPlayer.canShoot()) {
-                currentTeam.getCurrentPlayer().shoot(cam.getDirection(), cam.getLocation());
+            if (name.equals(SHOOT_BUTTON) && !isPressed && player.canShoot()) {
+                player.shoot(cam.getDirection(), cam.getLocation());
                 roundText.setText("LA RONDE " + round +
                         " EST TERMINÉE\nPATIENTEZ JUSQU'À CE QUE LES AUTRES JOUEURS TERMINENT\nLEUR RONDE.");
             } else if (name.equals(NEXT_BUTTON) && !isPressed) {
@@ -190,11 +184,11 @@ public class GameClient extends SimpleApplication {
     }
 
     private String getPlayerText() {
-        return "Équipe : " + currentTeam.getTeamNumber() + " || Joueur : " + currentTeam.getCurrentPlayer().getPlayerNumber();
+        return "Équipe : 1 || Joueur : " + player.getPlayerNumber();
     }
 
     private String getScoreText() {
-        return "Ronde en cours : " + round + " || Score équipe 1 = " + team1.getTeamScore() + " | Score équipe 2 = " + team2.getTeamScore();
+        return "Ronde en cours : " + round + " || Score équipe 1 = "+player.getScore()+" | Score équipe 2 = 0";
     }
 
     private void movePlayerToNextRound() {
