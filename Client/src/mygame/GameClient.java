@@ -15,10 +15,12 @@ import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
 import com.jme3.network.Network;
 import com.jme3.renderer.RenderManager;
-import com.jme3.system.JmeContext;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import mygame.util.NetworkMessages;
 
 /**
@@ -35,6 +37,7 @@ public class GameClient extends SimpleApplication {
     private Client client;
     private BulletAppState bulletAppState;
     private Map map;
+    private Player player;
     private int round = 1;
     private float i = 0;
     // GUI
@@ -42,17 +45,15 @@ public class GameClient extends SimpleApplication {
     private BitmapText playerText;
     private BitmapText timerText;
     private BitmapText roundText;
-    private Player player;
+    private GameInterface gui;
     private Game game;
 
     public static void main(String[] args) {
-        GameClient app = new GameClient();
-        app.start(JmeContext.Type.Display);
-        app.pauseOnFocus = false;
-    }
-    
-    public static void setSendMessage(boolean bool){
-        sendMessage = bool;
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
     }
 
     @Override
@@ -207,10 +208,33 @@ public class GameClient extends SimpleApplication {
     private void movePlayerToNextRound() {
         game.setIsCountdownStarted(true);
         round++;
-        Vector3f nextSpotPosition = map.getShootingSpot(round-1).getPosition();
+        Vector3f nextSpotPosition = map.getShootingSpot(round - 1).getPosition();
         Vector3f nextCamPosition = new Vector3f(nextSpotPosition.x, CAM_HEIGHT, nextSpotPosition.z);
         cam.setLocation(nextCamPosition);
         roundText.setText("");
         i=0;
+    }
+
+    private static void createAndShowGUI() {
+        //Create and set up the window.
+        JFrame frame = new JFrame("Angry Pidge");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // Determine the new location of the window
+        GameInterface newContentPane = new GameInterface();
+        newContentPane.addComponentToPane(frame.getContentPane());
+        frame.pack();
+        frame.setSize(new Dimension(700, 250));
+        int width = frame.getSize().width;
+        int height = frame.getSize().height;
+        int x = (dim.width - width) / 2;
+        int y = (dim.height - height) / 2;
+
+        // Move the window
+        frame.setLocation(x, y);
+
+        frame.setResizable(true);
+        frame.setVisible(true);
     }
 }
