@@ -62,11 +62,11 @@ public class AngryPidgeServerMain extends SimpleApplication {
 
     @Override
     public void simpleUpdate(float tpf) {
-        if(connectedPlayers.size()==2 && startGame){
+        if(connectedPlayers.size()==4 && startGame){
             myServer.broadcast(new NetworkMessages.GameStarted());
             startGame = false;
         }
-        if(responseReceived == 2){
+        if(responseReceived == 4){
             sendGameUpdate();
             responseReceived = 0;
         }
@@ -118,7 +118,7 @@ public class AngryPidgeServerMain extends SimpleApplication {
     private class ServerConnectionListener implements ConnectionListener{
 
         public void connectionAdded(Server server, HostedConnection conn) {
-            if(myServer.getConnections().size()>=4){
+            if(myServer.getConnections().size()>4){
                 conn.close("Too many players");
             }else{
                 if(connectedPlayers.size() < 2){
