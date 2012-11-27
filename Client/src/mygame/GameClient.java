@@ -36,6 +36,7 @@ public class GameClient extends SimpleApplication {
     com.jme3.network.Client client;
     private BulletAppState bulletAppState;
     private Map map;
+    private Player player;
     private int round = 1;
     // GUI
     private BitmapText scoreText;
@@ -212,10 +213,9 @@ public class GameClient extends SimpleApplication {
 
         // Determine the new location of the window
         GameInterface newContentPane = new GameInterface();
-        newContentPane.setOpaque(true);
-        frame.setContentPane(newContentPane);
+        newContentPane.addComponentToPane(frame.getContentPane());
         frame.pack();
-        frame.setSize(new Dimension(700, 500));
+        frame.setSize(new Dimension(700, 250));
         int width = frame.getSize().width;
         int height = frame.getSize().height;
         int x = (dim.width - width) / 2;
