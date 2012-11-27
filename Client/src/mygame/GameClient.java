@@ -82,7 +82,6 @@ public class GameClient extends SimpleApplication {
 
     @Override
     public void simpleUpdate(float tpf) {
-        playerText.setText(getPlayerText());
         if(game!=null){
            game.update(getTimer(), player); 
            i+=tpf;
@@ -191,7 +190,7 @@ public class GameClient extends SimpleApplication {
         scoreText.setLocalTranslation(200, scoreText.getLineHeight(), 0);
         playerText = new BitmapText(guiFont, false);
         playerText.setSize(guiFont.getCharSet().getRenderedSize());
-        playerText.setText(getPlayerText());
+        playerText.setText("Player Text");
         playerText.setLocalTranslation(475, 475, 0);
 
         timerText = new BitmapText(guiFont, false);
@@ -233,10 +232,6 @@ public class GameClient extends SimpleApplication {
                 settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
                 settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
         guiNode.attachChild(ch);
-    }
-
-    private String getPlayerText() {
-        return "Équipe : 1 || Joueur : " + player.getPlayerNumber();
     }
 
     private String getScoreText() {
