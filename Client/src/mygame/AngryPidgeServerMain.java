@@ -50,9 +50,9 @@ public class AngryPidgeServerMain extends SimpleApplication {
     @Override
     public void simpleInitApp() {                    
         try {
+            NetworkMessages.initializeSerializables();
             myServer = Network.createServer(PORT);
             myServer.start();
-            NetworkMessages.initializeSerializables();
             myServer.addMessageListener(new ServerListener());
             myServer.addConnectionListener(new ServerConnectionListener());
         } catch (IOException ex) {
@@ -62,11 +62,11 @@ public class AngryPidgeServerMain extends SimpleApplication {
 
     @Override
     public void simpleUpdate(float tpf) {
-        if(connectedPlayers.size()==4 && startGame){
+        if(connectedPlayers.size()==2 && startGame){
             myServer.broadcast(new NetworkMessages.GameStarted());
             startGame = false;
         }
-        if(responseReceived == 4){
+        if(responseReceived == 2){
             sendGameUpdate();
             responseReceived = 0;
         }

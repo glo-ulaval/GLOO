@@ -69,9 +69,9 @@ public class GameClient extends SimpleApplication {
         initializeCamera();
         initCrossHairs();
         try {
+            NetworkMessages.initializeSerializables();
             client = Network.connectToServer("localhost", AngryPidgeServerMain.PORT);
             client.start();
-            NetworkMessages.initializeSerializables();
             client.addMessageListener(new ClientListener());
         } catch (IOException ex) {
             Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
