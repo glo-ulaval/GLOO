@@ -18,6 +18,7 @@ import com.jme3.scene.shape.Box;
 import com.jme3.system.JmeContext;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,7 +38,7 @@ public class AngryPidgeServerMain extends SimpleApplication {
     private float counter = 0;
     private int i = 0;
     private Server myServer;
-    private List<Integer> scores = new ArrayList<Integer>();
+    private List<Integer> scores = Arrays.asList(0,0);
     private HashMap<Integer, Integer> connectedPlayers = new HashMap<Integer, Integer>();
     private int responseReceived = 0;
     private int round = 1;
@@ -67,12 +68,11 @@ public class AngryPidgeServerMain extends SimpleApplication {
             sendGameUpdate();
             responseReceived = 0;
         }
-        counter += tpf;
+ /*       counter += tpf;
         if(counter>=3.0f ){
             if(i==0){
                for(HostedConnection conn : myServer.getConnections()){
                    myServer.broadcast(Filters.in(conn), new NetworkMessages.NetworkMessage("Équipe # "+connectedPlayers.get(conn.getId()).toString())); 
-                   System.out.println(conn.getId());
                }
                i++;
             }
@@ -81,7 +81,7 @@ public class AngryPidgeServerMain extends SimpleApplication {
                i--;
             }
             counter = 0;
-        }
+        }*/
     }
 
     @Override
@@ -117,11 +117,12 @@ public class AngryPidgeServerMain extends SimpleApplication {
           }
           if(message instanceof NetworkMessages.ShootingResult){
               NetworkMessages.ShootingResult shootingResultMessage = (ShootingResult) message;
+              
               if(shootingResultMessage.isHasHitTarget()){
                   int teamNumber = connectedPlayers.get(source.getId());
                   addAPointToTeam(teamNumber);
-                  responseReceived++;
               }
+              responseReceived++;
           }
         }
     }

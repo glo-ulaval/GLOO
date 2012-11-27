@@ -15,8 +15,10 @@ import com.jme3.effect.ParticleMesh;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.network.Client;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import mygame.util.NetworkMessages;
 
 /**
  *
@@ -28,16 +30,18 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
     private static final String TARGET_NAME = "Target";
     private BulletAppState appState;
     private AssetManager assetManager;
+    private Client client;
     private Node rootNode;
     private boolean canShoot = false;
     private AudioNode audio;
     private int score = 0;
     private int playerNumber;
 
-    public Player(BulletAppState appState, AssetManager assetManager, Node rootNode) {
+    public Player(BulletAppState appState, AssetManager assetManager, Node rootNode, Client client) {
         this.appState = appState;
         this.assetManager = assetManager;
         this.rootNode = rootNode;
+        this.client = client;
         appState.getPhysicsSpace().addCollisionListener(this);
     }
 
@@ -77,6 +81,10 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
     public int getScore() {
         return score;
     }
+    
+    public void setScore(int score){
+        this.score = score;
+    }
 
     public void setCanShoot(boolean canShoot) {
         this.canShoot = canShoot;
@@ -90,6 +98,7 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
         canShoot = false;
         FlyingObject bullet = FlyingObjectFactory.createBullet(direction, location);
         new BulletGeometry(assetManager, rootNode, appState, bullet);
+        GameClient.setSendMessage(true);
     }
 
     private void instantiateExplosion(Spatial spatial) {

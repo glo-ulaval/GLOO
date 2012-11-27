@@ -31,10 +31,12 @@ public class GameClient extends SimpleApplication {
     private static final String SHOOT_BUTTON = "shoot";
     private static final String NEXT_BUTTON = "next";
     private static final Float CAM_HEIGHT = 8f;
-    com.jme3.network.Client client;
+    private static boolean sendMessage = true;
+    private Client client;
     private BulletAppState bulletAppState;
     private Map map;
     private int round = 1;
+    private float i = 0;
     // GUI
     private BitmapText scoreText;
     private BitmapText playerText;
@@ -47,6 +49,10 @@ public class GameClient extends SimpleApplication {
         GameClient app = new GameClient();
         app.start(JmeContext.Type.Display);
         app.pauseOnFocus = false;
+    }
+    
+    public static void setSendMessage(boolean bool){
+        sendMessage = bool;
     }
 
     @Override
@@ -71,9 +77,16 @@ public class GameClient extends SimpleApplication {
 
     @Override
     public void simpleUpdate(float tpf) {
-        scoreText.setText(getScoreText());
         playerText.setText(getPlayerText());
         game.update(getTimer(), player);
+        i+=tpf;
+        if(i > 10 && !player.canShoot() && sendMessage){
+            client.send(new NetworkMessages.ShootingResult(player.getScore()!=0));
+            player.setScore(0);
+            i = 0;
+            sendMessage = false;
+        }
+        
     }
 
     @Override
@@ -99,7 +112,7 @@ public class GameClient extends SimpleApplication {
 
     private void instantiateObjects() {
         map = new Map(assetManager, rootNode, bulletAppState);
-        player = new Player(bulletAppState,assetManager,rootNode);
+        player = new Player(bulletAppState,assetManager,rootNode, client);
         initializeGui();
     }
     private ActionListener actionListener = new ActionListener() {
@@ -128,9 +141,9 @@ public class GameClient extends SimpleApplication {
                 NetworkMessages.GameUpdateMessage updateMessage = (NetworkMessages.GameUpdateMessage) message;
                 if (scoreText != null) {
                     scoreText.setText("Ronde en cours : " + updateMessage.getPosition() + " || Score équipe 1 = " + updateMessage.getTeam1Score() + " | Score équipe 2 = " + updateMessage.getTeam2Score());
-                    //movePlayerToNextRound();
+                    movePlayerToNextRound();
                 }
-                client.send(new NetworkMessages.NetworkMessage("message received"));
+                //client.send(new NetworkMessages.NetworkMessage("message received"));
             }
         }
     }
@@ -198,5 +211,6 @@ public class GameClient extends SimpleApplication {
         Vector3f nextCamPosition = new Vector3f(nextSpotPosition.x, CAM_HEIGHT, nextSpotPosition.z);
         cam.setLocation(nextCamPosition);
         roundText.setText("");
+        i=0;
     }
 }
