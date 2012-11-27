@@ -55,6 +55,10 @@ public class GameClient extends SimpleApplication {
             }
         });
     }
+    
+    public static void setSendMessage(boolean bool){
+        sendMessage = bool;
+    }
 
     @Override
     public void simpleInitApp() {
@@ -122,10 +126,7 @@ public class GameClient extends SimpleApplication {
                 player.shoot(cam.getDirection(), cam.getLocation());
                 roundText.setText("LA RONDE " + round +
                         " EST TERMINÉE\nPATIENTEZ JUSQU'À CE QUE LES AUTRES JOUEURS TERMINENT\nLEUR RONDE.");
-            } else if (name.equals(NEXT_BUTTON) && !isPressed) {
-                movePlayerToNextRound();
             }
-
         }
     };
 
