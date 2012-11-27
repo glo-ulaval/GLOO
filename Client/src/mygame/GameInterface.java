@@ -62,12 +62,10 @@ public class GameInterface implements ItemListener {
         createGameButton = new JButton("Create Game");
         createGameButton.setVerticalTextPosition(AbstractButton.CENTER);
         createGameButton.setHorizontalTextPosition(AbstractButton.LEADING);
-        createGameButton.setActionCommand("createGame");
 
         joinGameButton = new JButton("Join Game");
         joinGameButton.setVerticalTextPosition(AbstractButton.CENTER);
         joinGameButton.setHorizontalTextPosition(AbstractButton.LEADING);
-        joinGameButton.setActionCommand("joinGame");
 
         createGameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -105,6 +103,8 @@ public class GameInterface implements ItemListener {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
         // Determine the new location of the window
+        ChooseTeamInterface newContentPane = new ChooseTeamInterface();
+        newContentPane.addComponentToPane(frame.getContentPane());
         frame.pack();
         frame.setSize(new Dimension(700, 250));
         int width = frame.getSize().width;
@@ -117,5 +117,51 @@ public class GameInterface implements ItemListener {
 
         frame.setResizable(true);
         frame.setVisible(true);
+    }
+
+    private class ChooseTeamInterface implements ItemListener {
+
+        private JPanel mainJPanel;
+        private JList teamList;
+
+        public void addComponentToPane(Container pane) {
+            JLabel title = new JLabel("Choisissez votre équipe : ", JLabel.CENTER);
+            Font newLabelFont = new Font(title.getFont().getName(), Font.BOLD, 18);
+            title.setFont(newLabelFont);
+            title.setVerticalTextPosition(AbstractButton.CENTER);
+            title.setHorizontalTextPosition(AbstractButton.LEADING);
+
+            JPanel listPane = new JPanel();
+            String[] teams = {"Team 1", "Team 2", "Team 3", "Team 4"};
+            gameList = new JList(teams);
+            gameList.setSelectedIndex(0);
+            DefaultListCellRenderer centerRenderer = new DefaultListCellRenderer();
+            centerRenderer.setHorizontalTextPosition(JLabel.CENTER);
+            gameList.setCellRenderer(centerRenderer);
+            listPane.add(gameList);
+            listPane.setSize(new Dimension(400, 200));
+
+            JPanel buttons = new JPanel();
+            JButton startGameButton = new JButton("Start Game!");
+            startGameButton.setVerticalTextPosition(AbstractButton.CENTER);
+            startGameButton.setHorizontalTextPosition(AbstractButton.LEADING);
+            startGameButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    GameClient app = new GameClient();
+                    app.start(JmeContext.Type.Display);
+                    Frame.getFrames()[1].dispose();
+                }
+            });
+            buttons.add(startGameButton);
+
+            pane.add(title, BorderLayout.PAGE_START);
+            pane.add(listPane, BorderLayout.CENTER);
+            pane.add(buttons, BorderLayout.PAGE_END);
+        }
+
+        public void itemStateChanged(ItemEvent evt) {
+            CardLayout cl = (CardLayout) (mainJPanel.getLayout());
+            cl.show(mainJPanel, (String) evt.getItem());
+        }
     }
 }
