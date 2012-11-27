@@ -213,7 +213,7 @@ public class GameClient extends SimpleApplication {
         youScoredText.setSize(guiFont.getCharSet().getRenderedSize());
         youScoredText.setColor(ColorRGBA.Red);
         youScoredText.setLocalTranslation(
-                settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
+                (settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2) - 50,
                 settings.getHeight() / 2 + timerText.getLineHeight() / 2, 0);
         youScoredText.setText("");
 
