@@ -45,6 +45,7 @@ public class GameClient extends SimpleApplication {
     private BitmapText playerText;
     private BitmapText timerText;
     private BitmapText roundText;
+    public static BitmapText youScoredText;
     private GameInterface gui;
     private Game game;
 
@@ -207,11 +208,20 @@ public class GameClient extends SimpleApplication {
                 settings.getWidth() / 2 - 300,
                 settings.getHeight() / 2, 0);
         roundText.setText("");
+        
+        youScoredText = new BitmapText(guiFont, false);
+        youScoredText.setSize(guiFont.getCharSet().getRenderedSize());
+        youScoredText.setColor(ColorRGBA.Red);
+        youScoredText.setLocalTranslation(
+                settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
+                settings.getHeight() / 2 + timerText.getLineHeight() / 2, 0);
+        youScoredText.setText("");
 
         guiNode.attachChild(scoreText);
         guiNode.attachChild(playerText);
         guiNode.attachChild(timerText);
         guiNode.attachChild(roundText);
+        guiNode.attachChild(youScoredText);
 
     }
 
@@ -240,6 +250,7 @@ public class GameClient extends SimpleApplication {
         Vector3f nextCamPosition = new Vector3f(nextSpotPosition.x, CAM_HEIGHT, nextSpotPosition.z);
         cam.setLocation(nextCamPosition);
         roundText.setText("");
+        youScoredText.setText("");
         i=0;
     }
 

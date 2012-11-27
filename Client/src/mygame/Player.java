@@ -129,5 +129,6 @@ public class Player extends RigidBodyControl implements PhysicsCollisionListener
         audio.setVolume(3);
         rootNode.attachChild(audio);
         audio.playInstance();
+        GameClient.youScoredText.setText("YOU SCORED");
     }
 }
