@@ -44,20 +44,6 @@ public class GameInterface implements ItemListener {
         title.setVerticalTextPosition(AbstractButton.CENTER);
         title.setHorizontalTextPosition(AbstractButton.LEADING);
 
-        JPanel listPane = new JPanel();
-        JLabel games = new JLabel("Available games : ", JLabel.CENTER);
-        Font font = new Font(title.getFont().getName(), Font.BOLD, 12);
-        games.setFont(font);
-        String[] teams = {"Game 1", "Game 2", "Game 3", "Game 4"};
-        gameList = new JList(teams);
-        gameList.setSelectedIndex(0);
-        DefaultListCellRenderer centerRenderer = new DefaultListCellRenderer();
-        centerRenderer.setHorizontalTextPosition(JLabel.CENTER);
-        gameList.setCellRenderer(centerRenderer);
-        listPane.add(games);
-        listPane.add(gameList);
-        listPane.setSize(new Dimension(400, 200));
-
         JPanel buttons = new JPanel();
         createGameButton = new JButton("Create Game");
         createGameButton.setVerticalTextPosition(AbstractButton.CENTER);
@@ -77,7 +63,8 @@ public class GameInterface implements ItemListener {
 
         joinGameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                createChooseTeamInterface();
+                GameClient app = new GameClient();
+                app.start(JmeContext.Type.Display);
                 Frame.getFrames()[0].dispose();
             }
         });
@@ -89,79 +76,10 @@ public class GameInterface implements ItemListener {
 
         pane.add(title, BorderLayout.PAGE_START);
         pane.add(mainJPanel, BorderLayout.CENTER);
-        pane.add(listPane, BorderLayout.PAGE_END);
     }
 
     public void itemStateChanged(ItemEvent evt) {
         CardLayout cl = (CardLayout) (mainJPanel.getLayout());
         cl.show(mainJPanel, (String) evt.getItem());
-    }
-
-    private void createChooseTeamInterface() {
-        JFrame frame = new JFrame("Choose Team");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-
-        // Determine the new location of the window
-        ChooseTeamInterface newContentPane = new ChooseTeamInterface();
-        newContentPane.addComponentToPane(frame.getContentPane());
-        frame.pack();
-        frame.setSize(new Dimension(700, 250));
-        int width = frame.getSize().width;
-        int height = frame.getSize().height;
-        int x = (dim.width - width) / 2;
-        int y = (dim.height - height) / 2;
-
-        // Move the window
-        frame.setLocation(x, y);
-
-        frame.setResizable(true);
-        frame.setVisible(true);
-    }
-
-    private class ChooseTeamInterface implements ItemListener {
-
-        private JPanel mainJPanel;
-        private JList teamList;
-
-        public void addComponentToPane(Container pane) {
-            JLabel title = new JLabel("Choisissez votre équipe : ", JLabel.CENTER);
-            Font newLabelFont = new Font(title.getFont().getName(), Font.BOLD, 18);
-            title.setFont(newLabelFont);
-            title.setVerticalTextPosition(AbstractButton.CENTER);
-            title.setHorizontalTextPosition(AbstractButton.LEADING);
-
-            JPanel listPane = new JPanel();
-            String[] teams = {"Team 1", "Team 2", "Team 3", "Team 4"};
-            gameList = new JList(teams);
-            gameList.setSelectedIndex(0);
-            DefaultListCellRenderer centerRenderer = new DefaultListCellRenderer();
-            centerRenderer.setHorizontalTextPosition(JLabel.CENTER);
-            gameList.setCellRenderer(centerRenderer);
-            listPane.add(gameList);
-            listPane.setSize(new Dimension(400, 200));
-
-            JPanel buttons = new JPanel();
-            JButton startGameButton = new JButton("Start Game!");
-            startGameButton.setVerticalTextPosition(AbstractButton.CENTER);
-            startGameButton.setHorizontalTextPosition(AbstractButton.LEADING);
-            startGameButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    GameClient app = new GameClient();
-                    app.start(JmeContext.Type.Display);
-                    Frame.getFrames()[1].dispose();
-                }
-            });
-            buttons.add(startGameButton);
-
-            pane.add(title, BorderLayout.PAGE_START);
-            pane.add(listPane, BorderLayout.CENTER);
-            pane.add(buttons, BorderLayout.PAGE_END);
-        }
-
-        public void itemStateChanged(ItemEvent evt) {
-            CardLayout cl = (CardLayout) (mainJPanel.getLayout());
-            cl.show(mainJPanel, (String) evt.getItem());
-        }
     }
 }

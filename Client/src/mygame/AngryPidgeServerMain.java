@@ -83,7 +83,13 @@ public class AngryPidgeServerMain extends SimpleApplication {
             round = 1;
             position = 1;
             startGame = true;
-            myServer.broadcast(new NetworkMessages.GameStop());
+            int teamNumber = 0;
+            if (scores.get(1) > scores.get(0)) {
+                teamNumber = 2;
+            } else if (scores.get(1) < scores.get(0)) {
+                teamNumber = 1;
+            } 
+            myServer.broadcast(new NetworkMessages.GameStop(teamNumber));
         }else{
             position++;
             myServer.broadcast(new NetworkMessages.GameUpdateMessage(position, scores.get(0), scores.get(1)));

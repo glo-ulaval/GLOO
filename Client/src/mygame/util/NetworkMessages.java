@@ -91,7 +91,17 @@ public class NetworkMessages {
     
     @Serializable
     public static class GameStop extends AbstractMessage{
+        private int teamNumber;
+        
         public GameStop(){
+        }
+        
+        public GameStop(int teamNumber){
+            this.teamNumber = teamNumber;
+        }
+        
+        public int getTeamNumber() {
+            return teamNumber;
         }
     }
     

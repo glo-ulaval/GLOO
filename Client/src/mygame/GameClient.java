@@ -70,7 +70,7 @@ public class GameClient extends SimpleApplication {
         initCrossHairs();
         try {
             NetworkMessages.initializeSerializables();
-            client = Network.connectToServer("localhost", AngryPidgeServerMain.PORT);
+            client = Network.connectToServer("10.240.199.3", AngryPidgeServerMain.PORT);
             client.start();
             client.addMessageListener(new ClientListener());
         } catch (IOException ex) {
@@ -157,6 +157,8 @@ public class GameClient extends SimpleApplication {
                 }
             }
             if (message instanceof NetworkMessages.GameStop) {
+                NetworkMessages.GameStop gameStopMessage = (NetworkMessages.GameStop) message;
+                youScoredText.setText("L'équipe " + gameStopMessage.getTeamNumber() + " a gagné!!");
                 closeApp();
             }
             if (message instanceof NetworkMessages.PlayerInfoMessage) {
@@ -259,7 +261,7 @@ public class GameClient extends SimpleApplication {
         GameInterface newContentPane = new GameInterface();
         newContentPane.addComponentToPane(frame.getContentPane());
         frame.pack();
-        frame.setSize(new Dimension(700, 250));
+        frame.setSize(new Dimension(700, 150));
         int width = frame.getSize().width;
         int height = frame.getSize().height;
         int x = (dim.width - width) / 2;
